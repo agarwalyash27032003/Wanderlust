@@ -1,0 +1,19 @@
+<% layout('layouts/boilerplate') -%>
+<% var title = "Wanderlust"; %>
+<h1>Pending Approvals</h1>
+
+<div class="pending-approval row row-cols-lg-4 mt-3">
+    <% for( let listing of listings ) { %>
+        <div class="card-wrapper position-relative">
+            <a href="/admin/listings/<%= listing._id %>">
+                <div class="card col position-relative">
+                    <img src="<%= listing.image.url %>" alt="">
+                    <div class="card-body">
+                        <h2><%= listing.title %></h2>
+                        <p>&#8377;<%= listing.price?.toLocaleString("en-IN") || "N/A" %> / night</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    <% } %>
+</div>

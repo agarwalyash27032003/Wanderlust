@@ -8,14 +8,14 @@ const Listing = require("./listing.js");
 const userSchema = new Schema({
     firstName:{
         type: String,
-        required: true
+        // required: true
     },
     lastName:{
         type: String,
     },
     contactNumber:{
         type: Number,
-        required: true
+        // required: true
     },
     profileImage:{
         url:{
@@ -35,23 +35,28 @@ const userSchema = new Schema({
         { 
             type: mongoose.Schema.Types.ObjectId, 
             ref: "Booking", 
-            required: true 
+            // required: true 
         }
     ],
     listings: [
         { 
             type: mongoose.Schema.Types.ObjectId, 
             ref: "Listing", 
-            required: true 
+            // required: true 
         }
     ],
     wishlists: [ 
         { 
             type: mongoose.Schema.Types.ObjectId, 
             ref: "Listing", 
-            required: true 
+            // required: true 
         }
     ],
+    role:{
+        type: String,
+        // required: true,
+        default: "user",
+    }
 });
 
 userSchema.post("findOneAndDelete", async(user) => {

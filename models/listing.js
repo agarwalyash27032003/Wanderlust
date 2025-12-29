@@ -15,6 +15,7 @@ const listingSchema = new Schema({
     },
     price: Number,
     location: String,
+    city: String,
     country: String,
     latitude: Number,
     longitude: Number,
@@ -43,6 +44,11 @@ const listingSchema = new Schema({
     property_type: {
       type: String,
       required: true,  
+    },
+    approval_status:{
+      type: Boolean,
+      required: true,
+      default: false,
     },
 });
 

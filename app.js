@@ -67,6 +67,7 @@ const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 const bookingRouter = require("./routes/booking.js");
+const adminRouter = require("./routes/admin.js");
 
 main().then(() => {
     console.log("Database successful");
@@ -88,6 +89,7 @@ app.use("/listings", listingRouter); // Every route defined in listingRouter wil
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/listings/:id/bookings", bookingRouter);
 app.use("/", userRouter);
+app.use("/admin/listings", adminRouter);
 
 app.all("/{*any}", (req, res, next) => {
     next(new ExpressError(404, "Page Not Found!")); 

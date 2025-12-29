@@ -2,6 +2,10 @@
 <% var title = listing.title; %>
 <title><%= title %></title>
 
+<% if (listing.approval_status === false) { %>
+    <%- include("../forms/approvalForm.ejs") %>
+<% } %>
+
     <div id="show-page">
         <h1 class="bebas-neue-regular-font"><%=listing.title%></h1>
         <p class="location mb-3" ><i class="fa-solid fa-location-dot" style:color: indianred;></i> <%= listing.location %>, <%= listing.country %></p>
@@ -28,46 +32,10 @@
             </div>
             <div class="right-sec">
                 <p>&#8377;<%=listing.price.toLocaleString("en-IN")%> <span>/night</span> </p>
-                
-                
-                 
-                    <form action="/listings/<%=listing._id%>/bookings" method="POST" id="booking-form">
-                        <input type="hidden" name="listingId" value="<%= listing._id %>">
-                        
-                        <div>
-                            <label>Check-in:</label>
-                            <input class="date-input" id="checkin" type="text" name="checkIn" min="" required> 
-                        </div>
-    
-                        <div>
-                            <label>Check-out:</label>
-                            <input class="date-input" id="checkout" type="text" name="checkOut" min="" required>
-                        </div>
-    
-                        <div>
-                            <label>Guests:</label>
-                            <input type="number" name="guests" min="1" value="1" max=<%= listing.maxGuests %>>
-                        </div>
-    
-                        <button type="submit">Book Now</button>
-                    </form>
-
-                
 
             </div>
         </div>
         
-        <% 
-            const hasBooked = listing.bookings.find(b => currUser && b.user._id.toString() === currUser._id.toString());
-            const hasReviewed = listing.reviews.some(r => currUser && r.author._id.toString() === currUser._id.toString());
-            const nowDate = new Date(now);
-            const isCompleted = hasBooked && (nowDate >= new Date(hasBooked.checkOut));
-        %>
-
-        <% if (currUser && hasBooked && !hasReviewed && isCompleted && !currUser._id.equals(listing.owner._id) ) { %>
-            <!-- <hr> -->
-            <%- include("../forms/leave-review") %>
-        <% } %>
 
         <% if (listing.reviews.length > 0) { %>
         <hr>
@@ -84,12 +52,6 @@
                             </div>
                         </div>
                         <p class="review-comment">"<%= review.comment %>"</p>
-
-                        <% if (currUser && review.author._id.toString() === currUser._id.toString()) { %>
-                            <form method="POST" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
-                                <button class="delete-review-btn">Delete Review</button>
-                            </form>
-                        <% } %>
                     </div>
                 <% } %>
             </div>

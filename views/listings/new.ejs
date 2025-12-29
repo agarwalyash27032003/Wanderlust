@@ -33,6 +33,10 @@
             <input class="form-control" id="location" type="text" name="listing[location]" placeholder="Enter the location" required> 
         </div>
         <div>
+            <label for="location">Which city?</label>
+            <input class="form-control" id="city" type="text" name="listing[city]" placeholder="Enter the city" required> 
+        </div>
+        <div>
             <label for="country">Which country?</label>
             <select class="form-control" name="listing[country]" id="country">
             <% for (let i = 0; i < countryNames.length; i++) { %>

@@ -13,6 +13,14 @@ module.exports.isLoggedIn = (req, res, next) => {
     next();
 }
 
+module.exports.isAdmin = (req, res, next) => {
+    if (!req.user || req.user.role !== "admin") {
+        req.flash("error", "You do not have admin access");
+        return res.redirect("/listings");
+    }
+    next();
+};
+
 module.exports.saveRedirectUrl = (req, res, next) => {
     if(req.session.redirectUrl){
         res.locals.redirectUrl = req.session.redirectUrl;

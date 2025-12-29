@@ -1,0 +1,7 @@
+<div class="approval-options">
+    <h1>Do you want to approve?</h1>
+    <form action="/admin/listings/<%= listing._id%>?_method=PUT" method="post">
+        <button name = "action" type="submit" value="approve">Approve</button>
+        <button name = "action" type="submit" value="reject">Reject</button>
+    </form>
+</div>

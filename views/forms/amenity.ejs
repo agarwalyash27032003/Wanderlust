@@ -1,7 +1,7 @@
 <div class="col-6 col-md-4">
     <label class="amenity-tile">
-        <input type="checkbox" name="listing[amenities]" value="Wifi" hidden 
-            <%= listing.amenities.includes("Wifi") ? "checked" : "" %>>
+        <input type="checkbox" name="listing[amenities][]" value="Wifi" hidden 
+            <%= listing.amenities && listing.amenities.includes("Wifi") ? "checked" : "" %>>
         <div class="tile-content">
             <div class="amenity-icon"><i class="fas fa-wifi"></i></div>
             <div class="amenity-label">Wifi</div>
@@ -11,8 +11,8 @@
 
 <div class="col-6 col-md-4">
     <label class="amenity-tile">
-        <input type="checkbox" name="listing[amenities]" value="TV" hidden 
-            <%= listing.amenities.includes("TV") ? "checked" : "" %>>
+        <input type="checkbox" name="listing[amenities][]" value="TV" hidden 
+            <%= listing.amenities && listing.amenities.includes("TV") ? "checked" : "" %>>
         <div class="tile-content">
             <div class="amenity-icon"><i class="fas fa-tv"></i></div>
             <div class="amenity-label">TV</div>
@@ -22,8 +22,8 @@
 
 <div class="col-6 col-md-4">
     <label class="amenity-tile">
-        <input type="checkbox" name="listing[amenities]" value="Kitchen" hidden 
-            <%= listing.amenities.includes("Kitchen") ? "checked" : "" %>>
+        <input type="checkbox" name="listing[amenities][]" value="Kitchen" hidden 
+            <%= listing.amenities && listing.amenities.includes("Kitchen") ? "checked" : "" %>>
         <div class="tile-content">
             <div class="amenity-icon"><i class="fas fa-utensils"></i></div>
             <div class="amenity-label">Kitchen</div>
@@ -33,8 +33,8 @@
 
 <div class="col-6 col-md-4">
     <label class="amenity-tile">
-        <input type="checkbox" name="listing[amenities]" value="WM" hidden 
-            <%= listing.amenities.includes("WM") ? "checked" : "" %>>
+        <input type="checkbox" name="listing[amenities][]" value="WM" hidden 
+            <%= listing.amenities && listing.amenities.includes("WM") ? "checked" : "" %>>
         <div class="tile-content">
             <div class="amenity-icon"><i class="fas fa-soap"></i></div>
             <div class="amenity-label">Washing machine</div>
@@ -44,8 +44,8 @@
 
 <div class="col-6 col-md-4">
     <label class="amenity-tile">
-        <input type="checkbox" name="listing[amenities]" value="F-Parking" hidden 
-            <%= listing.amenities.includes("F-Parking") ? "checked" : "" %>>
+        <input type="checkbox" name="listing[amenities][]" value="F-Parking" hidden 
+            <%= listing.amenities && listing.amenities.includes("F-Parking") ? "checked" : "" %>>
         <div class="tile-content">
             <div class="amenity-icon"><i class="fas fa-parking"></i></div>
             <div class="amenity-label">Free parking on premises</div>
@@ -55,8 +55,8 @@
 
 <div class="col-6 col-md-4">
     <label class="amenity-tile">
-        <input type="checkbox" name="listing[amenities]" value="P-Parking" hidden 
-            <%= listing.amenities.includes("P-Parking") ? "checked" : "" %>>
+        <input type="checkbox" name="listing[amenities][]" value="P-Parking" hidden 
+            <%= listing.amenities && listing.amenities.includes("P-Parking") ? "checked" : "" %>>
         <div class="tile-content">
             <div class="amenity-icon"><i class="fas fa-ticket-alt"></i></div>
             <div class="amenity-label">Paid parking on premises</div>
@@ -66,8 +66,8 @@
 
 <div class="col-6 col-md-4">
     <label class="amenity-tile">
-        <input type="checkbox" name="listing[amenities]" value="AC" hidden 
-            <%= listing.amenities.includes("AC") ? "checked" : "" %>>
+        <input type="checkbox" name="listing[amenities][]" value="AC" hidden 
+            <%= listing.amenities && listing.amenities.includes("AC") ? "checked" : "" %>>
         <div class="tile-content">
             <div class="amenity-icon"><i class="fas fa-snowflake"></i></div>
             <div class="amenity-label">Air conditioning</div>
@@ -77,8 +77,8 @@
 
 <div class="col-6 col-md-4">
     <label class="amenity-tile">
-        <input type="checkbox" name="listing[amenities]" value="Workspace" hidden 
-            <%= listing.amenities.includes("Workspace") ? "checked" : "" %>>
+        <input type="checkbox" name="listing[amenities][]" value="Workspace" hidden 
+            <%= listing.amenities && listing.amenities.includes("Workspace") ? "checked" : "" %>>
         <div class="tile-content">
             <div class="amenity-icon"><i class="fas fa-laptop-house"></i></div>
             <div class="amenity-label">Dedicated workspace</div>
@@ -88,8 +88,8 @@
 
 <div class="col-6 col-md-4">
     <label class="amenity-tile">
-        <input type="checkbox" name="listing[amenities]" value="Gym" hidden 
-            <%= listing.amenities.includes("Gym") ? "checked" : "" %>>
+        <input type="checkbox" name="listing[amenities][]" value="Gym" hidden 
+            <%= listing.amenities && listing.amenities.includes("Gym") ? "checked" : "" %>>
         <div class="tile-content">
             <div class="amenity-icon"><i class="fas fa-dumbbell"></i></div>
             <div class="amenity-label">Gym</div>
@@ -99,8 +99,8 @@
 
 <div class="col-6 col-md-4">
     <label class="amenity-tile">
-        <input type="checkbox" name="listing[amenities]" value="Spa" hidden 
-            <%= listing.amenities.includes("Spa") ? "checked" : "" %>>
+        <input type="checkbox" name="listing[amenities][]" value="Spa" hidden 
+            <%= listing.amenities && listing.amenities.includes("Spa") ? "checked" : "" %>>
         <div class="tile-content">
             <div class="amenity-icon"><i class="fas fa-spa"></i></div>
             <div class="amenity-label">Spa</div>
@@ -110,8 +110,8 @@
 
 <div class="col-6 col-md-4">
     <label class="amenity-tile">
-        <input type="checkbox" name="listing[amenities]" value="No-Smoking" hidden 
-            <%= listing.amenities.includes("No-Smoking") ? "checked" : "" %>>
+        <input type="checkbox" name="listing[amenities][]" value="No-Smoking" hidden 
+            <%= listing.amenities && listing.amenities.includes("No-Smoking") ? "checked" : "" %>>
         <div class="tile-content">
             <div class="amenity-icon"><i class="fas fa-ban-smoking"></i></div>
             <div class="amenity-label">No-Smoking</div>
@@ -121,8 +121,8 @@
 
 <div class="col-6 col-md-4">
     <label class="amenity-tile">
-        <input type="checkbox" name="listing[amenities]" value="Fire Extinguisher" hidden 
-            <%= listing.amenities.includes("Fire Extinguisher") ? "checked" : "" %>>
+        <input type="checkbox" name="listing[amenities][]" value="Fire Extinguisher" hidden 
+            <%= listing.amenities && listing.amenities.includes("Fire Extinguisher") ? "checked" : "" %>>
         <div class="tile-content">
             <div class="amenity-icon"><i class="fa-solid fa-fire-extinguisher"></i></div>
             <div class="amenity-label">Fire Extinguisher</div>
@@ -132,8 +132,8 @@
 
 <div class="col-6 col-md-4">
     <label class="amenity-tile">
-        <input type="checkbox" name="listing[amenities]" value="First aid" hidden 
-            <%= listing.amenities.includes("First aid") ? "checked" : "" %>>
+        <input type="checkbox" name="listing[amenities][]" value="First aid" hidden 
+            <%= listing.amenities && listing.amenities.includes("First aid") ? "checked" : "" %>>
         <div class="tile-content">
             <div class="amenity-icon"><i class="fa-solid fa-kit-medical"></i></div>
             <div class="amenity-label">First Aid Kit</div>

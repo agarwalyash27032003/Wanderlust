@@ -76,7 +76,10 @@ module.exports.myProfileEdit = async (req, res) => {
 };
 
 module.exports.myListing = async (req, res) => {
-    const user = await User.findById(req.user._id).populate("listings");
+    const user = await User.findById(req.user._id).populate({
+        path: "listings",
+        match: { approval_status: true }
+    });
     res.render("users/mylistings.ejs", { title: "Wanderlust", user });
 }
 

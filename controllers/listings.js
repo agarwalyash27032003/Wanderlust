@@ -4,11 +4,12 @@ const User = require("../models/user.js");
 const countries = require("countries-list");
 
 module.exports.index = async (req, res) => {
-    const { type, location } = req.query;
-    let query = {};
+    const { type, location } = req.query; // anything after /listing? here comes to req.query
+    let query = {approval_status: true}; // By default, don’t filter anything. Show all listings.
 
+    // "i" means Case-insensitive
     if (type) {
-        query.property_type = new RegExp(`^${type}$`, "i");
+        query.property_type = new RegExp(`^${type}$`, "i"); // If user searches a property type
     }
 
     if (location) {
@@ -58,7 +59,7 @@ module.exports.createListing = async (req, res, next) => {
     await newListing.save();
     await user.save();
     
-    req.flash("success", "New Listing is Created!");
+    req.flash("success", "Listing Sent for Approval!");
     res.redirect("/listings");
 };
 

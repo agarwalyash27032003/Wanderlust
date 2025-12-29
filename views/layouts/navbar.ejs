@@ -36,16 +36,25 @@
             </button>
 
             <div class="dropdown-menu" id="dropdown">
-              <% if (typeof currUser !=='undefined' && currUser) { %>
+              <% if (typeof currUser !=='undefined' && currUser && currUser.role !== 'admin') { %>
                 
                 <a href="/listings/new">Wanderlust your home!</a>
                 <a href="/my-bookings">My Bookings</a>
                 <a href="/my-listings">My Listings</a>
                 <a href="/logout">Log Out</a>
-                <% } else { %>
-                  <a href="/signup">Sign Up</a>
-                  <a href="/login">Log In</a>
-                  <% } %>
+                
+                <% } else if (currUser && currUser.role === 'admin') { %>
+                  
+                  <a href="/listings">All Listings</a>
+                  <a href="/admin/listings/pending-approvals">Pending Approvals</a>
+                  <a href="/logout">Log Out</a>
+
+              <% } else { %>
+                
+                <a href="/signup">Sign Up</a>
+                <a href="/login">Log In</a>
+              
+                <% } %>
             </div>
       </div>
     </div>
