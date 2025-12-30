@@ -47,7 +47,6 @@ const listingSchema = new Schema({
     },
     approval_status:{
       type: Boolean,
-      required: true,
       default: false,
     },
 });

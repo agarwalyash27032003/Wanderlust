@@ -115,44 +115,67 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 document.addEventListener("DOMContentLoaded", async () => {
-    const form = document.getElementById("booking-form");
-    if (!form) return;
+  const form = document.getElementById("booking-form");
+  if (!form) return;
 
-    const listingIdInput = form.querySelector("input[name='listingId']");
-    if (!listingIdInput) return;
+  const listingIdInput = form.querySelector("input[name='listingId']");
+  if (!listingIdInput) return;
 
-    const listingId = listingIdInput.value;
-    const checkInInput = document.getElementById("checkin");
-    const checkOutInput = document.getElementById("checkout");
+  const listingId = listingIdInput.value;
+  const checkInInput = document.getElementById("checkin");
+  const checkOutInput = document.getElementById("checkout");
 
-    if (!checkInInput || !checkOutInput) return;
+  if (!checkInInput || !checkOutInput) return;
 
-    try {
-        const res = await fetch(`/listings/${listingId}/bookings/booked-dates`);
-        const data = await res.json();
+  try {
+    const res = await fetch(`/listings/${listingId}/bookings/booked-dates`);
+    const data = await res.json();
 
-        // Ensure dates are converted to 'YYYY-MM-DD'
-        const disabledDates = data.bookedDates.map(date =>
-            new Date(date).toISOString().split('T')[0]
-        );
+    // Ensure dates are converted to 'YYYY-MM-DD'
+    const disabledDates = data.bookedDates.map(date =>
+      new Date(date).toISOString().split('T')[0]
+    );
 
-        flatpickr(checkInInput, {
-            dateFormat: "Y-m-d",
-            minDate: "today",
-            disable: disabledDates,
-            onChange: function(selectedDates, selectedDateStr) {
-                checkOutInput.removeAttribute("disabled");
-                flatpickr(checkOutInput, {
-                    dateFormat: "Y-m-d",
-                    minDate: selectedDateStr,
-                    disable: disabledDates
-                });
-            }
+    flatpickr(checkInInput, {
+      dateFormat: "Y-m-d",
+      minDate: "today",
+      disable: disabledDates,
+      onChange: function (selectedDates, selectedDateStr) {
+        checkOutInput.removeAttribute("disabled");
+        flatpickr(checkOutInput, {
+          dateFormat: "Y-m-d",
+          minDate: selectedDateStr,
+          disable: disabledDates
         });
+      }
+    });
 
-        checkOutInput.setAttribute("disabled", true);
-    } catch (err) {
-        console.error("Error loading booked dates:", err);
-    }
+    checkOutInput.setAttribute("disabled", true);
+  } catch (err) {
+    console.error("Error loading booked dates:", err);
+  }
 });
 
+const customSelect = document.querySelector(".custom-select");
+const selected = customSelect.querySelector(".selected");
+const options = customSelect.querySelector(".options");
+
+selected.addEventListener("click", () => {
+  options.classList.toggle("show");
+});
+
+document.querySelectorAll(".options li").forEach(option => {
+  option.addEventListener("click", () => {
+    const value = option.dataset.value;
+
+    window.location.href = value
+      ? `/listings?sort=${value}`
+      : `/listings`;
+  });
+});
+
+document.addEventListener("click", (e) => {
+  if (!customSelect.contains(e.target)) {
+    options.classList.remove("show");
+  }
+});

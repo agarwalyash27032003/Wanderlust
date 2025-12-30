@@ -6,6 +6,7 @@ const countries = require("countries-list");
 module.exports.index = async (req, res) => {
     const { type, location } = req.query; // anything after /listing? here comes to req.query
     let query = {approval_status: true}; // By default, don’t filter anything. Show all listings.
+    const { sort } = req.query;
 
     // "i" means Case-insensitive
     if (type) {
@@ -19,16 +20,37 @@ module.exports.index = async (req, res) => {
         ];
     }
 
-    let listings = await Listing.find(query);
+    let sortOption = {};
+
+    if(sort === "default"){
+        sortOption = {};
+    }
+    else if (sort === "price_asc") {
+        sortOption.price = 1;
+    } 
+    else if (sort === "price_desc") {
+        sortOption.price = -1;
+    }
+    
+    let listings = await Listing.find(query)
+        .populate("bookings") // needed for popularity
+        .sort(sortOption);
+
+    // popularity sorting (by booking count)
+    if (sort === "popular") {
+        listings.sort((a, b) => b.bookings.length - a.bookings.length);
+    }
+
+    // listings = await Listing.find(query).sort(sortOption);
 
     // If location was searched and no listings were found
     if (location && listings.length === 0) {
         req.flash("error", "No listings found. Try a different location.");
-        listings = await Listing.find({}); // Load all listings
+        listings = await Listing.find({}).sort(sortOption); // Load all listings
     }
 
     res.render("listings/index.ejs", {
-        listings,
+        listings, sort,
         title: "WanderLust",
         location
     });

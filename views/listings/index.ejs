@@ -1,47 +1,56 @@
 <% layout('layouts/boilerplate') -%>
 <% var title = "All Listings - Wanderlust"; %>
 
-<div id="filters">
-    <div class="property-type filter" data-type="House">
-        <div><i class="fa-solid fa-house"></i></div>
-        <p>House</p>
+<div id="filter-header">
+    <div id="filters">
+        <div class="property-type filter" data-type="House">
+            <div><i class="fa-solid fa-house"></i></div>
+            <p>House</p>
+        </div>
+        <div class="property-type filter" data-type="Flat">
+            <div><i class="fa-solid fa-building"></i></div>
+            <p>Flat/Apartment</p>
+        </div>
+        <div class="property-type filter" data-type="Camping">
+            <div><i class="fa-solid fa-campground"></i></div>
+            <p>Camping</p>
+        </div>
+        <div class="property-type filter" data-type="Caravan">
+            <div><i class="fa-solid fa-caravan"></i></div>
+            <p>Caravan</p>
+        </div>
+        <div class="property-type filter" data-type="Igloo">
+            <div><i class="fa-solid fa-igloo"></i></div>
+            <p>Igloo</p>
+        </div>  
     </div>
-    <div class="property-type filter" data-type="Flat">
-        <div><i class="fa-solid fa-building"></i></div>
-        <p>Flat/Apartment</p>
-    </div>
-    <div class="property-type filter" data-type="Camping">
-        <div><i class="fa-solid fa-campground"></i></div>
-        <p>Camping</p>
-    </div>
-    <div class="property-type filter" data-type="Caravan">
-        <div><i class="fa-solid fa-caravan"></i></div>
-        <p>Caravan</p>
-    </div>
-    <div class="property-type filter" data-type="Igloo">
-        <div><i class="fa-solid fa-igloo"></i></div>
-        <p>Igloo</p>
+    <div class="custom-select">
+        <div class="selected">Sort by</div>
+        <ul class="options">
+            <li data-value="">Default</li>
+            <li data-value="price_asc">Low to High</li>
+            <li data-value="price_desc">High to Low</li>
+            <li data-value="popular">Popularity</li>
+        </ul>
     </div>
 </div>
-<div class="all-listing row row-cols-lg-4 mt-3">
-    <% for(let listing of listings) { %>
-        <div class="card-wrapper position-relative">
-            <a href="/listings/<%= listing._id %>">
-                <div class="card col position-relative">
-                    <img src="<%= listing.image.url %>" alt="">
-                    <div class="card-body">
-                        <h2><%= listing.title %></h2>
-                        <p>&#8377;<%= listing.price?.toLocaleString("en-IN") || "N/A" %> / night</p>
+<div id="home-page-division">
+    <div id="home-page-filters">
+
+    </div>
+    <div class="all-listing row row-cols-lg-4 mt-3">
+        <% for(let listing of listings) { %>
+            <div class="card-wrapper position-relative">
+                <a href="/listings/<%= listing._id %>">
+                    <div class="card col position-relative">
+                        <img src="<%= listing.image.url %>" alt="">
+                        <div class="card-body">
+                            <h2><%= listing.title %></h2>
+                            <p>&#8377;<%= listing.price?.toLocaleString("en-IN") || "N/A" %> / night</p>
+                        </div>
                     </div>
-                </div>
-            </a>
-            <!-- Heart icon outside the link but inside the card
-            <form action="/listings/<%=listing._id%>?_method=PUT" method="POST" class="wishlist-btn">
-                <input type="hidden" name="wishlistToggle" value="true">
-                <button>
-                    <i class="fa-regular fa-heart wishlist-icon"></i>
-                </button>
-            </form> -->
-        </div>
-    <% } %>
+                </a>
+            </div>
+        <% } %>
+    </div>
 </div>

@@ -152,6 +152,74 @@ nav h1 a{
 }
 
 
+#filter-header{
+  display: flex;
+  justify-content: space-between;
+}
+
+.custom-select {
+  position: relative;
+  width: 180px;
+  font-family: sans-serif;
+}
+
+/* Selected box */
+.selected {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  background: white;
+}
+
+.selected::after {
+  content: "▼";
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  color: #555;
+  pointer-events: none; /* arrow shouldn't block clicks */
+}
+
+/* Dropdown list */
+.options {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  width: 100%;
+  background: white;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  z-index: 10;
+  overflow: hidden; /* 🔑 FIX */
+  display: none;
+}
+
+.options.show{
+  display: block;
+}
+
+.options li {
+  padding: 8px 12px;
+  width: 100%;        /* 🔑 FIX */
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.options li:hover,
+.options li.active {
+  background-color: #e04343;
+  color: white;
+}
+
+
+
 /* SHOW PAGE */
 #show-page{
   width: 80%;

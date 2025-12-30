@@ -1,6 +1,5 @@
 const Listing = require("../models/listing.js");
 const ExpressError = require("../utils/ExpressError");
-const User = require("../models/user.js");
 
 module.exports.allPendingApprovals = async (req, res) => {
     const listings = await Listing.find({"approval_status" : false}); // get all the listings
