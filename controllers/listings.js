@@ -3,64 +3,78 @@ const ExpressError = require("../utils/ExpressError");
 const User = require("../models/user.js");
 const countries = require("countries-list");
 
-module.exports.index = async (req, res) => {
-    const { type, location } = req.query; // anything after /listing? here comes to req.query
-    let query = {approval_status: true}; // By default, don’t filter anything. Show all listings.
-    const { sort } = req.query;
+const countryCodes = Object.keys(countries.countries); 
+const countryNames = countryCodes.map(code => countries.countries[code].name).sort();
 
-    // "i" means Case-insensitive
+module.exports.index = async (req, res) => {
+    const { type, location, sort, country, minPrice, maxPrice } = req.query;
+
+    let query = { approval_status: true };
+
+    // in RegExp, ^ and $ means exact match, and i means case-insensitive
     if (type) {
-        query.property_type = new RegExp(`^${type}$`, "i"); // If user searches a property type
+        query.property_type = new RegExp(`^${type}$`, "i");
+        
+    }
+
+    if (country) {
+        query.country = new RegExp(`^${country}$`, "i");
     }
 
     if (location) {
         query.$or = [
-            { country: new RegExp(location, "i") },
+            { city: new RegExp(location, "i") },
             { location: new RegExp(location, "i") }
         ];
     }
 
+    if (minPrice || maxPrice) {
+        query.price = {};
+
+        if (minPrice) {
+            query.price.$gte = Number(minPrice);
+        }
+
+        if (maxPrice) {
+            query.price.$lte = Number(maxPrice);
+        }
+    }
+
     let sortOption = {};
+    if (sort === "price_asc") sortOption.price = 1;
+    else if (sort === "price_desc") sortOption.price = -1;
 
-    if(sort === "default"){
-        sortOption = {};
-    }
-    else if (sort === "price_asc") {
-        sortOption.price = 1;
-    } 
-    else if (sort === "price_desc") {
-        sortOption.price = -1;
-    }
-    
-    let listings = await Listing.find(query)
-        .populate("bookings") // needed for popularity
-        .sort(sortOption);
+    let listings;
 
-    // popularity sorting (by booking count)
     if (sort === "popular") {
+        listings = await Listing.find(query).populate("bookings");
         listings.sort((a, b) => b.bookings.length - a.bookings.length);
+    } else {
+        listings = await Listing.find(query).sort(sortOption);
     }
 
-    // listings = await Listing.find(query).sort(sortOption);
-
-    // If location was searched and no listings were found
     if (location && listings.length === 0) {
         req.flash("error", "No listings found. Try a different location.");
-        listings = await Listing.find({}).sort(sortOption); // Load all listings
+        listings = await Listing.find({ approval_status: true }).sort(sortOption);
     }
 
     res.render("listings/index.ejs", {
-        listings, sort,
+        listings,
+        sort,
+        countryNames,
+        location, minPrice, maxPrice,
+        country,
         title: "WanderLust",
-        location
+        pageClass: "listing-page"
     });
 };
 
 
 
+
 module.exports.renderForm = (req, res) => {
-    const countryCodes = Object.keys(countries.countries);
-    const countryNames = countryCodes.map(code => countries.countries[code].name).sort();
+    // const countryCodes = Object.keys(countries.countries);
+    // const countryNames = countryCodes.map(code => countries.countries[code].name).sort();
     res.render("listings/new.ejs", {listing: { amenities: [] }, countryNames, title: `Add New Property - Wanderlust` });
 };
 
@@ -99,6 +113,9 @@ module.exports.showListing = async (req, res) => {
 // Getting the edit form
 module.exports.editForm = async (req, res) => {
     const { id } = req.params;
+    // const countryCodes = Object.keys(countries.countries);
+    // const countryNames = countryCodes.map(code => countries.countries[code].name).sort();
+    
     const listing = await Listing.findById(id);
     if (!listing) {
         req.flash("error", "Listing Not Found!");
@@ -106,10 +123,11 @@ module.exports.editForm = async (req, res) => {
     }
     let orgImage = listing.image.url;
     orgImage = orgImage.replace("/upload/", "/upload/h_300,w_250,c_fill/");
+    
 
     res.render("listings/edit.ejs", {
         listing,
-        orgImage,
+        orgImage, countryNames,
         title: `Edit - ${listing.title}`
     });
 };

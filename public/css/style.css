@@ -2,6 +2,11 @@ html,
 body {
   height: 100%;
   margin: 0;
+  /* overflow: hidden; */
+}
+
+body.listing-page{
+  overflow: hidden;
 }
 
 body {
@@ -184,7 +189,7 @@ nav h1 a{
 }
 
 /* Dropdown list */
-.options {
+.sort-by-options {
   position: absolute;
   top: 110%;
   left: 0;
@@ -201,23 +206,58 @@ nav h1 a{
   display: none;
 }
 
-.options.show{
+.sort-by-options.show{
   display: block;
 }
 
-.options li {
+.sort-by-options li {
   padding: 8px 12px;
   width: 100%;        /* 🔑 FIX */
   box-sizing: border-box;
   cursor: pointer;
 }
 
-.options li:hover,
-.options li.active {
+.sort-by-options li:hover,
+.sort-by-options li.active {
   background-color: #e04343;
   color: white;
 }
 
+/* Home Page Division */
+#home-page-division{
+  display: flex;
+  gap: 24px;
+  height: calc(100vh - 180px); /* adjust based on navbar + filter-header height */
+  overflow: hidden;
+  margin-top: 1rem;
+}
+
+#filters-form {
+  width: 260px;
+  padding-right: 8px;
+
+  height: 100%;
+  overflow-y: auto;
+
+  position: sticky;
+  top: 0;
+}
+
+.all-listing {
+  flex: 1;
+  height: 100%;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+#filters-form,
+.all-listing {
+  scroll-behavior: smooth;
+}
+
+.all-listing::-webkit-scrollbar {
+    display: none;
+}
 
 
 /* SHOW PAGE */
@@ -623,6 +663,10 @@ input[type="radio"]:checked+.tile-content {
   width: 20rem;
 }
 
+.filter-form-control{
+  width: 10rem;
+}
+
 .search-btn{
   border: 1px solid indianred;
   color: indianred;
@@ -637,4 +681,10 @@ input[type="radio"]:checked+.tile-content {
     width: 80%;
     margin: auto;
     margin-bottom: 3rem;
+}
+
+@media (min-width: 1400px){
+  .container{
+    min-width: 1450px;
+  }
 }

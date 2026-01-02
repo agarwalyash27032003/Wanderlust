@@ -156,15 +156,17 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 });
 
+// Sort By
+
 const customSelect = document.querySelector(".custom-select");
 const selected = customSelect.querySelector(".selected");
-const options = customSelect.querySelector(".options");
+const options = customSelect.querySelector(".sort-by-options");
 
 selected.addEventListener("click", () => {
   options.classList.toggle("show");
 });
 
-document.querySelectorAll(".options li").forEach(option => {
+document.querySelectorAll(".sort-by-options li").forEach(option => {
   option.addEventListener("click", () => {
     const value = option.dataset.value;
 
@@ -178,4 +180,16 @@ document.addEventListener("click", (e) => {
   if (!customSelect.contains(e.target)) {
     options.classList.remove("show");
   }
+});
+
+
+document.querySelectorAll(
+  'input[name="minPrice"], input[name="maxPrice"]'
+).forEach(input => {
+  input.addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      document.getElementById("filters-form").submit();
+    }
+  });
 });

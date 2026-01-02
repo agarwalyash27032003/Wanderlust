@@ -17,7 +17,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Charm:wght@400;700&family=Edu+NSW+ACT+Cursive:wght@400..700&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="<%= typeof pageClass !== 'undefined' ? pageClass : '' %>">
 
     <div class="d-flex flex-column min-vh-100">
         <%- include("./navbar.ejs") %>
