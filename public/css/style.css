@@ -5,21 +5,20 @@ body {
   /* overflow: hidden; */
 }
 
-body.listing-page{
-  overflow: hidden;
+body.listing-page {
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+body.listing-page::-webkit-scrollbar {
+  display: none;
 }
 
 a {
   text-decoration: none !important;
 }
 
-p{
+p {
   margin: 0 !important;
 }
 
@@ -31,23 +30,23 @@ p{
   color: white;
 }
 
-.edu-font{
-    font-family: "Edu NSW ACT Cursive", cursive;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
-    font-size: 2.5rem;
-    text-align: center;
-    margin-top: 2rem;
+.edu-font {
+  font-family: "Edu NSW ACT Cursive", cursive;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 2.5rem;
+  text-align: center;
+  margin-top: 2rem;
 }
 
 .bebas-neue-regular-font {
-    font-family: "Bebas Neue", sans-serif;
-    font-weight: 400;
-    font-size: 5rem;
-    text-align: center;
-    font-style: normal;
-    margin-bottom: 0;
+  font-family: "Bebas Neue", sans-serif;
+  font-weight: 400;
+  font-size: 5rem;
+  text-align: center;
+  font-style: normal;
+  margin-bottom: 0;
 }
 
 .edit-prop {
@@ -86,6 +85,10 @@ nav h1{
 nav h1 a{
     color: black !important;
 } */
+
+.container-fluid {
+  margin: 0 3rem !important;
+}
 
 .logo {
   height: 6rem;
@@ -134,30 +137,32 @@ nav h1 a{
   color: #555;
 }
 
-.wishlist-btn{
+.wishlist-btn {
   position: absolute;
   bottom: 2.5rem;
-  right: 3rem;}
+  right: 3rem;
+}
 
-.wishlist-btn button{
+.wishlist-btn button {
   border: none;
   background: none;
 }
 
-.wishlist-btn:hover{
+.wishlist-btn:hover {
   color: indianred;
 }
 
 .wishlist-icon {
-    transition: color 0.2s ease;
+  transition: color 0.2s ease;
 }
 
 .wishlist-icon.active {
-    color: indianred; /* active color */
+  color: indianred;
+  /* active color */
 }
 
 
-#filter-header{
+#filter-header {
   display: flex;
   justify-content: space-between;
 }
@@ -185,7 +190,8 @@ nav h1 a{
   transform: translateY(-50%);
   font-size: 12px;
   color: #555;
-  pointer-events: none; /* arrow shouldn't block clicks */
+  pointer-events: none;
+  /* arrow shouldn't block clicks */
 }
 
 /* Dropdown list */
@@ -197,22 +203,24 @@ nav h1 a{
   background: white;
   border-radius: 6px;
   border: 1px solid #ddd;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   list-style: none;
   padding: 0;
   margin: 0;
   z-index: 10;
-  overflow: hidden; /* 🔑 FIX */
+  overflow: hidden;
+  /* 🔑 FIX */
   display: none;
 }
 
-.sort-by-options.show{
+.sort-by-options.show {
   display: block;
 }
 
 .sort-by-options li {
   padding: 8px 12px;
-  width: 100%;        /* 🔑 FIX */
+  width: 100%;
+  /* 🔑 FIX */
   box-sizing: border-box;
   cursor: pointer;
 }
@@ -224,10 +232,10 @@ nav h1 a{
 }
 
 /* Home Page Division */
-#home-page-division{
+body.listing-page #home-page-division {
   display: flex;
   gap: 24px;
-  height: calc(100vh - 180px); /* adjust based on navbar + filter-header height */
+  height: calc(100vh - 180px);
   overflow: hidden;
   margin-top: 1rem;
 }
@@ -241,6 +249,7 @@ nav h1 a{
 
   position: sticky;
   top: 0;
+  padding-left: 1rem;
 }
 
 .all-listing {
@@ -256,12 +265,12 @@ nav h1 a{
 }
 
 .all-listing::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 
 /* SHOW PAGE */
-#show-page{
+#show-page {
   width: 80%;
   margin: auto;
 }
@@ -292,13 +301,13 @@ nav h1 a{
   max-width: 60%;
 }
 
-.hosted-by{
+.hosted-by {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
-.hosted-by p{
+.hosted-by p {
   font-weight: 500;
   font-size: 1.4rem;
 }
@@ -334,21 +343,21 @@ nav h1 a{
   font-weight: normal;
 }
 
-.things-col{
-    display: flex;
-    justify-content: space-around;
-    margin: 2rem 0;
+.things-col {
+  display: flex;
+  justify-content: space-around;
+  margin: 2rem 0;
 }
 
-.things-col div{
+.things-col div {
   width: 30%;
 }
 
-.things-col p{
+.things-col p {
   font-size: larger;
 }
 
-.things-head{
+.things-head {
   font-weight: bold;
 }
 
@@ -428,6 +437,7 @@ nav h1 a{
 
 /* Footer */
 .footer {
+  position: static;
   background-color: white;
   color: black;
   text-align: center;
@@ -470,6 +480,7 @@ nav h1 a{
   cursor: pointer;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
 }
+
 .menu-button i {
   font-size: 18px;
   color: black;
@@ -500,7 +511,7 @@ nav h1 a{
   color: white;
 }
 
-.profile-image{
+.profile-image {
   height: 50px;
   width: 50px;
   border-radius: 50%;
@@ -601,90 +612,91 @@ input[type="radio"]:checked+.tile-content {
 /* REVIEWS */
 
 #reviews-section {
-    max-width: 1000px;
-    margin: 3rem auto;
-    /* padding: 1rem; */
+  max-width: 1000px;
+  margin: 3rem auto;
+  /* padding: 1rem; */
 }
 
 .review-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
 }
 
 .review-card {
-    background: white;
-    border-radius: 12px;
-    padding: 1.2rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    transition: transform 0.2s ease;
+  background: white;
+  border-radius: 12px;
+  padding: 1.2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
 }
 
 .review-header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 .review-avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #ddd;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ddd;
 }
 
 .review-username {
-    font-weight: bold;
-    margin: 0;
+  font-weight: bold;
+  margin: 0;
 }
 
 .review-comment {
-    font-style: italic;
-    margin-bottom: 1rem;
+  font-style: italic;
+  margin-bottom: 1rem;
 }
 
 .delete-review-btn {
-    background: indianred;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 0.9rem;
+  background: indianred;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
 }
 
 .delete-review-btn:hover {
-    background: #e04343;
+  background: #e04343;
 }
 
-.form-control{
+.form-control {
   width: 20rem;
 }
 
-.filter-form-control{
+.filter-form-control {
   width: 10rem;
 }
 
-.search-btn{
+.search-btn {
   border: 1px solid indianred;
   color: indianred;
 }
 
-.search-btn:hover, .search-btn:active{
+.search-btn:hover,
+.search-btn:active {
   background-color: indianred !important;
   border: none;
 }
 
-#map{
-    width: 80%;
-    margin: auto;
-    margin-bottom: 3rem;
+#map {
+  width: 80%;
+  margin: auto;
+  margin-bottom: 3rem;
 }
 
-@media (min-width: 1400px){
-  .container{
+@media (min-width: 1400px) {
+  .container {
     min-width: 1450px;
   }
 }

@@ -24,7 +24,8 @@ module.exports.index = async (req, res) => {
     if (location) {
         query.$or = [
             { city: new RegExp(location, "i") },
-            { location: new RegExp(location, "i") }
+            { location: new RegExp(location, "i") },
+            { country: new RegExp(location, "i") }
         ];
     }
 
