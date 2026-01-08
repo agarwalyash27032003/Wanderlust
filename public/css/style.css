@@ -1,17 +1,11 @@
+/* =========================================
+   1. GLOBAL & BASE STYLES
+   ========================================= */
 html,
 body {
   height: 100%;
   margin: 0;
   /* overflow: hidden; */
-}
-
-body.listing-page {
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-
-body.listing-page::-webkit-scrollbar {
-  display: none;
 }
 
 a {
@@ -22,14 +16,13 @@ p {
   margin: 0 !important;
 }
 
-.primary-btn {
-  border: none;
-  background: indianred;
-  padding: 10px;
-  border-radius: 30px;
-  color: white;
+.container-fluid {
+  padding-inline: 3rem;
+  box-sizing: border-box;
 }
 
+
+/* Typography */
 .edu-font {
   font-family: "Edu NSW ACT Cursive", cursive;
   font-optical-sizing: auto;
@@ -43,10 +36,28 @@ p {
 .bebas-neue-regular-font {
   font-family: "Bebas Neue", sans-serif;
   font-weight: 400;
-  font-size: 5rem;
+  font-size: 7vw;
   text-align: center;
   font-style: normal;
   margin-bottom: 0;
+}
+
+.page-heading {
+  text-align: center;
+  margin: 15px auto;
+}
+
+/* Utility / Global Buttons */
+.primary-btn {
+  border: none;
+  background: indianred;
+  padding: 10px;
+  border-radius: 30px;
+  color: white;
+}
+
+button.primary-btn:hover {
+  box-shadow: 0px 0px 5px 3px #8f89898a;
 }
 
 .edit-prop {
@@ -61,43 +72,133 @@ p {
   background: #4b474736 !important;
 }
 
-button.primary-btn:hover {
-  box-shadow: 0px 0px 5px 3px #8f89898a;
-}
+/* =========================================
+   2. NAVIGATION & HEADER
+   ========================================= */
 
-.page-heading {
-  text-align: center;
-  margin: 15px auto;
-}
-
-/* nav{
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    border-bottom: 1px solid #ccc;
-    padding: 15px 0px;
-}
-
-nav h1{
-    margin: 0;
-}
-
-nav h1 a{
-    color: black !important;
-} */
-
-.container-fluid {
-  margin: 0 3rem !important;
+.navbar-brand{
+  margin: 0;
 }
 
 .logo {
   height: 6rem;
 }
 
-.all-listing {
-  margin: 0 !important;
+.menu-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
 }
 
+.menu-button {
+  background: #f4f4f4;
+  border: none;
+  border-radius: 50%;
+  padding: 12px 15px;
+  cursor: pointer;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+}
+
+.menu-button i {
+  font-size: 18px;
+  color: black;
+}
+
+.profile-image {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 60px;
+  background-color: white;
+  min-width: 180px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  z-index: 1000;
+}
+
+
+.dropdown-menu a {
+  display: block;
+  padding: 10px 15px;
+  color: black;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.dropdown-menu a:hover {
+  background-color: indianred;
+  color: white;
+}
+
+.navbar-nav .dropdown-menu{
+  position: absolute;
+}
+
+/* Search Bar */
+.form-control {
+  width: 20rem;
+}
+
+.search-btn {
+  border: 1px solid indianred;
+  color: indianred;
+}
+
+.search-btn:hover,
+.search-btn:active {
+  background-color: indianred !important;
+  border: none;
+}
+
+.search-bar-form{
+  max-width: 100%;
+}
+
+/* =========================================
+   3. HOME PAGE & LISTING GRID
+   ========================================= */
+
+.container{
+  min-width: 90% !important;
+}
+
+body.listing-page {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+body.listing-page::-webkit-scrollbar {
+  display: none;
+}
+
+body.listing-page #home-page-division {
+  display: flex;
+  gap: 24px;
+  height: calc(100vh - 180px);
+  overflow: hidden;
+  margin-top: 1rem;
+}
+
+.all-listing {
+  margin: 0 !important;
+  flex: 1;
+  height: 100%;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.all-listing::-webkit-scrollbar {
+  display: none;
+}
+
+/* Listing Cards */
 .card {
   border: 1px solid #eee;
   border-radius: 12px;
@@ -137,34 +238,123 @@ nav h1 a{
   color: #555;
 }
 
-.wishlist-btn {
-  position: absolute;
-  bottom: 2.5rem;
-  right: 3rem;
+/* =========================================
+   4. FILTERS & SORTING
+   ========================================= */
+
+/* PROPERTY TYPE SLIDER */
+.property-slider {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.5rem 0;
+  scroll-behavior: smooth;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+
+  /* Hide scrollbar */
+  scrollbar-width: none;        /* Firefox */
+}
+.property-slider::-webkit-scrollbar {
+  display: none;               /* Chrome, Safari */
 }
 
-.wishlist-btn button {
-  border: none;
-  background: none;
+.property-slider > * {
+  flex-shrink: 0;   /* prevents squishing */
+  max-width: 100%;  /* prevents overflow bleed */
 }
 
-.wishlist-btn:hover {
-  color: indianred;
+/* Each property card */
+.property-type {
+  min-width: 90px;
+  flex-shrink: 0;
+  text-align: center;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-.wishlist-icon {
-  transition: color 0.2s ease;
+.property-type:hover {
+  opacity: 1;
+  transform: translateY(-2px);
 }
 
-.wishlist-icon.active {
-  color: indianred;
-  /* active color */
+.property-type i {
+  font-size: 20px;
 }
 
 
+#filters-wrapper{
+  width: 20%;
+}
+
+#filters-form {
+  /* width: 260px; */
+  /* padding-right: 8px; */
+  height: 100%;
+  overflow-y: auto;
+  position: sticky;
+  top: 0;
+  /* padding-left: 1rem; */
+  padding: 0 1rem;
+}
+
+#filters-form,
+.all-listing {
+  scroll-behavior: smooth;
+}
+
+#filters {
+  display: flex;
+  /* flex-wrap: wrap; */
+}
+
+.filter {
+  text-align: center;
+  /* margin-right: 2rem; */
+  /* margin-top: 2rem; */
+  opacity: 0.7;
+}
+
+.filter:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.filter-form-control {
+  width: 10rem;
+}
+
+.filter-toggle-btn,
+.custom-select {
+  flex-shrink: 0;
+}
+
+/* Sorting Dropdown */
 #filter-header {
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
+  align-items: center;
+  gap: 1rem;
+  min-width: 0;
+}
+
+/* General overrides for buttons and elements in mobile */
+.filter-toggle-btn {
+  display: none;
+}
+
+.close-filters {
+  background: none;
+  display: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  margin-bottom: 1rem;
 }
 
 .custom-select {
@@ -173,7 +363,6 @@ nav h1 a{
   font-family: sans-serif;
 }
 
-/* Selected box */
 .selected {
   padding: 8px 12px;
   border: 1px solid #ccc;
@@ -191,10 +380,8 @@ nav h1 a{
   font-size: 12px;
   color: #555;
   pointer-events: none;
-  /* arrow shouldn't block clicks */
 }
 
-/* Dropdown list */
 .sort-by-options {
   position: absolute;
   top: 110%;
@@ -231,47 +418,11 @@ nav h1 a{
   color: white;
 }
 
-/* Home Page Division */
-body.listing-page #home-page-division {
-  display: flex;
-  gap: 24px;
-  height: calc(100vh - 180px);
-  overflow: hidden;
-  margin-top: 1rem;
-}
-
-#filters-form {
-  width: 260px;
-  padding-right: 8px;
-
-  height: 100%;
-  overflow-y: auto;
-
-  position: sticky;
-  top: 0;
-  padding-left: 1rem;
-}
-
-.all-listing {
-  flex: 1;
-  height: 100%;
-  overflow-y: auto;
-  padding-right: 8px;
-}
-
-#filters-form,
-.all-listing {
-  scroll-behavior: smooth;
-}
-
-.all-listing::-webkit-scrollbar {
-  display: none;
-}
-
-
-/* SHOW PAGE */
+/* =========================================
+   5. SHOW PAGE (PROPERTY DETAILS)
+   ========================================= */
 #show-page {
-  width: 80%;
+  width: 90%;
   margin: auto;
 }
 
@@ -312,6 +463,7 @@ body.listing-page #home-page-division {
   font-size: 1.4rem;
 }
 
+/* Price/Action Section on Right */
 .right-sec {
   display: flex;
   flex-direction: column;
@@ -343,6 +495,7 @@ body.listing-page #home-page-division {
   font-weight: normal;
 }
 
+/* House Rules / Things to know */
 .things-col {
   display: flex;
   justify-content: space-around;
@@ -361,163 +514,28 @@ body.listing-page #home-page-division {
   font-weight: bold;
 }
 
-/* Booking Form */
-#booking-form {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+.things-info{
+  font-size: medium;
 }
 
-#booking-form input[type="text"],
-#booking-form input[type="number"] {
-  width: 100%;
-  padding: 8px;
-  box-sizing: border-box;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
-
-/* Add new property */
-/* Add new property */
-.add-new-form {
-  max-width: 60%;
-  margin: 20px auto;
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.add-new-form label {
-  font-size: 1.5rem;
-}
-
-.add-new-form input,
-.add-new-form textarea,
-.add-new-form select {
-  padding: 12px 16px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  font-size: 1rem;
-  font-family: 'Segoe UI', sans-serif;
-  outline: none;
-  transition: border-color 0.3s ease;
-  width: 100%;
-}
-
-.add-new-form input:focus,
-.add-new-form textarea:focus {
-  box-shadow: none !important;
-  border: 2px solid black;
-}
-
-.add-new-form textarea {
-  min-height: 100px !important;
-  resize: vertical;
-}
-
-.add-new-form button,
-#booking-form button {
-  padding: 12px;
-  background-color: indianred;
-  color: white;
-  font-weight: 600;
-  font-size: 1rem;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.add-new-form button:hover,
-#booking-form button:hover {
-  background-color: #0056b3;
-}
-
-
-/* Footer */
-.footer {
-  position: static;
-  background-color: white;
-  color: black;
-  text-align: center;
-  padding: 20px 10px;
-  font-family: Arial, sans-serif;
-}
-
-.footer p {
-  margin: 0 0 10px;
-  font-size: 14px;
-}
-
-.social-icons {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-
-.social-icons a img {
-  width: 24px;
-  height: 24px;
-  transition: transform 0.3s ease;
-}
-
-.social-icons a:hover img {
-  transform: scale(1.2);
-}
-
-.menu-wrapper {
-  position: relative;
-  display: flex;
-  gap: 1rem;
-}
-
-.menu-button {
-  background: #f4f4f4;
-  border: none;
+/* Profile / Org Image */
+.org-image img {
+  width: 200px;
   border-radius: 50%;
-  padding: 12px 15px;
-  cursor: pointer;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  height: 200px;
+  object-fit: cover;
 }
 
-.menu-button i {
-  font-size: 18px;
-  color: black;
+/* Map */
+#map {
+  width: 80%;
+  margin: auto;
+  margin-bottom: 3rem;
 }
 
-.dropdown-menu {
-  display: none;
-  position: absolute;
-  right: 0;
-  top: 50px;
-  background-color: white;
-  min-width: 180px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  z-index: 1000;
-}
-
-.dropdown-menu a {
-  display: block;
-  padding: 10px 15px;
-  color: black;
-  text-decoration: none;
-  font-size: 14px;
-}
-
-.dropdown-menu a:hover {
-  background-color: indianred;
-  color: white;
-}
-
-.profile-image {
-  height: 50px;
-  width: 50px;
-  border-radius: 50%;
-}
-
-
+/* =========================================
+   6. AMENITIES SECTION
+   ========================================= */
 .amenity-grid {
   margin-bottom: 1rem;
 }
@@ -577,40 +595,24 @@ input[type="radio"]:checked+.tile-content {
   white-space: nowrap;
 }
 
-@media (max-width: 600px) {
-  .amenity-item {
-    padding: 4px 8px;
-    font-size: 12px;
-    gap: 6px;
-  }
+/* Make column stretch */
+.amenity-tile {
+  height: 100%;
+  display: block;
 }
 
-#filters {
+/* Make tile content same height */
+.tile-content {
+  height: 100%;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.filter {
-  text-align: center;
-  margin-right: 2rem;
-  /* margin-top: 2rem; */
-  opacity: 0.7;
-}
 
-.filter:hover {
-  opacity: 1;
-  cursor: pointer;
-}
-
-.org-image img {
-  width: 200px;
-  border-radius: 50%;
-  height: 200px;
-  object-fit: cover;
-}
-
-/* REVIEWS */
-
+/* =========================================
+   7. REVIEWS SECTION
+   ========================================= */
 #reviews-section {
   max-width: 1000px;
   margin: 3rem auto;
@@ -670,33 +672,234 @@ input[type="radio"]:checked+.tile-content {
   background: #e04343;
 }
 
-.form-control {
-  width: 20rem;
+/* =========================================
+   8. FORMS (BOOKING & ADD NEW)
+   ========================================= */
+
+/* Booking Form */
+#booking-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.filter-form-control {
-  width: 10rem;
+#booking-form input[type="text"],
+#booking-form input[type="number"] {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  border-radius: 6px;
+  border: 1px solid #ccc;
 }
 
-.search-btn {
-  border: 1px solid indianred;
-  color: indianred;
+/* Add new property */
+.add-new-form {
+  max-width: 60%;
+  margin: 20px auto;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
-.search-btn:hover,
-.search-btn:active {
-  background-color: indianred !important;
+.add-new-form label {
+  font-size: 1.5rem;
+}
+
+.add-new-form input,
+.add-new-form textarea,
+.add-new-form select {
+  padding: 12px 16px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: 'Segoe UI', sans-serif;
+  outline: none;
+  transition: border-color 0.3s ease;
+  width: 100%;
+}
+
+.add-new-form input:focus,
+.add-new-form textarea:focus {
+  box-shadow: none !important;
+  border: 2px solid black;
+}
+
+.add-new-form textarea {
+  min-height: 100px !important;
+  resize: vertical;
+}
+
+.add-new-form button,
+#booking-form button {
+  padding: 12px;
+  background-color: indianred;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
   border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-#map {
-  width: 80%;
-  margin: auto;
-  margin-bottom: 3rem;
+.add-new-form button:hover,
+#booking-form button:hover {
+  background-color: #0056b3;
 }
 
-@media (min-width: 1400px) {
-  .container {
-    min-width: 1450px;
+/* =========================================
+   9. FOOTER
+   ========================================= */
+.footer {
+  position: static;
+  background-color: white;
+  color: black;
+  text-align: center;
+  padding: 20px 10px;
+  font-family: Arial, sans-serif;
+}
+
+.footer p {
+  margin: 0 0 10px;
+  font-size: 14px;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.social-icons a img {
+  width: 24px;
+  height: 24px;
+  transition: transform 0.3s ease;
+}
+
+.social-icons a:hover img {
+  transform: scale(1.2);
+}
+
+/* =========================================
+   10. RESPONSIVE MEDIA QUERIES
+   ========================================= */
+
+@media (max-width: 1020px) {
+
+  .add-new-form{
+    max-width: 80%;
+  }
+
+  /* Show hamburger */
+  .filter-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: white;
+    border: 1px solid #ddd;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+  }
+
+  .close-filters{
+    display: inline;
+  }
+
+  /* Hide filters by default */
+  #filters-wrapper {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 80%;
+    max-width: 320px;
+    height: 100vh;
+    background: white;
+    z-index: 2000;
+    padding: 1rem;
+    transition: left 0.3s ease;
+    box-shadow: 4px 0 12px rgba(0,0,0,0.15);
+    overflow-y: auto;
+  }
+
+  /* When active */
+  #filters-wrapper.active {
+    left: 0;
+  }
+
+  /* Layout becomes single column */
+  #home-page-division {
+    flex-direction: column;
+    height: auto;
+  }
+
+  #filters-form {
+    width: 100%;
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .search-bar{
+    width: 55%;
+  }
+  .container-fluid{
+    padding-inline: 1rem;
+  }
+  .add-new-form{
+    max-width: 100%;
+  }
+  .sections{
+    flex-direction: column;
+  }
+  .left-sec{
+    max-width: 100%;
+  }
+  .right-sec{
+    width: 100%;
+  }
+  .bebas-neue-regular-font{
+    font-size: 8vw;
+  }
+  #filter-header {
+    flex-wrap: wrap;
+  }
+  .property-slider {
+    order: 1;
+    width: 100%;
+  }
+  .filter-toggle-btn {
+    order: 2;
+  }
+  .custom-select {
+    order: 3;
+  }
+}
+
+@media (max-width: 600px) {
+  .navbar-logo{
+    order: 1;
+  }
+  .navbar-nav.search-bar {
+    width: 90vw;
+    align-items: center;
+    margin: auto;
+    margin-bottom: 1rem;
+  }
+  .navbar-nav{
+    order: 3;
+  }
+  .menu-wrapper{
+    order: 2;
+  }
+  .listing-image{
+    height: 40vh;
+  }
+  .amenity-item {
+    padding: 4px 8px;
+    font-size: 12px;
+    gap: 6px;
   }
 }

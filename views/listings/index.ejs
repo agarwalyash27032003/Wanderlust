@@ -2,7 +2,8 @@
 <% var title = "All Listings - Wanderlust"; %>
 
 <div id="filter-header">
-    <div id="filters">
+    
+    <div id="filters" class="property-slider">
         <div class="property-type filter" data-type="House">
             <div><i class="fa-solid fa-house"></i></div>
             <p>House</p>
@@ -23,7 +24,18 @@
             <div><i class="fa-solid fa-igloo"></i></div>
             <p>Igloo</p>
         </div>  
+        <div class="property-type filter" data-type="Igloo">
+            <div><i class="fa-solid fa-igloo"></i></div>
+            <p>Igloo</p>
+        </div>  
+        <div class="property-type filter" data-type="Igloo">
+            <div><i class="fa-solid fa-igloo"></i></div>
+            <p>Igloo</p>
+        </div>  
     </div>
+    <button id="filter-toggle" class="filter-toggle-btn">
+        ☰ Filters
+    </button>
     <div class="custom-select">
         <div class="selected">Sort by</div>
         <ul class="sort-by-options">
@@ -39,33 +51,36 @@
     <!-- On change, form is automatically submitted. A Get request is sent with data, so browser automatically makes it
     /listings?minPrice=5000
     minPrice is the 'name' of the Input field -->
-    <form method="GET" action="/listings" id="filters-form">
+    <div id="filters-wrapper">
+        <button class="close-filters">✕</button>
+        <form method="GET" action="/listings" id="filters-form">
 
-        <div class="price-min-max-filter">
-            <div class="price-min-filter">
-                <p>Min</p>
-                <input class="filter-form-control form-control" type="number" name="minPrice" placeholder="₹ Min" value="<%= typeof minPrice !== 'undefined' ? minPrice : '' %>">
+            <div class="price-min-max-filter">
+                <div class="price-min-filter">
+                    <p>Min</p>
+                    <input class="filter-form-control form-control" type="number" name="minPrice" placeholder="₹ Min" value="<%= typeof minPrice !== 'undefined' ? minPrice : '' %>">
+                </div>
+
+                <div class="price-max-filter">
+                    <p>Max</p>
+                    <input class="filter-form-control form-control" type="number" name="maxPrice" placeholder="₹ Max" value="<%= typeof maxPrice !== 'undefined' ? maxPrice : '' %>">
+                </div>
             </div>
 
-            <div class="price-max-filter">
-                <p>Max</p>
-                <input class="filter-form-control form-control" type="number" name="maxPrice" placeholder="₹ Max" value="<%= typeof maxPrice !== 'undefined' ? maxPrice : '' %>">
+            <div class="country-filter">
+                <p>Country</p>
+                <select class="filter-form-control form-control" name="country" id="filter-country" onchange="this.form.submit()">
+                    <option value="">All Countries</option>
+                    <% for (let i = 0; i < countryNames.length; i++) { %>
+                        <option value="<%= countryNames[i] %>" <%= country === countryNames[i] ? "selected" : "" %>> <%= countryNames[i] %> </option>
+                    <% } %>
+                </select>
             </div>
-        </div>
 
-        <div class="country-filter">
-            <p>Country</p>
-            <select class="filter-form-control form-control" name="country" id="filter-country" onchange="this.form.submit()">
-                <option value="">All Countries</option>
-                <% for (let i = 0; i < countryNames.length; i++) { %>
-                    <option value="<%= countryNames[i] %>" <%= country === countryNames[i] ? "selected" : "" %>> <%= countryNames[i] %> </option>
-                <% } %>
-            </select>
-        </div>
+        </form>
+    </div>
 
-    </form>
-
-    <div class="all-listing row row-cols-lg-4 mt-3">
+    <div class="all-listing row row-cols-xl-4 row-cols-lg-3 row-cols-md-3 row-cols-sm-2 row-cols-1 mt-3">
         <% for(let listing of listings) { %>
             <div class="card-wrapper position-relative">
                 <a href="/listings/<%= listing._id %>">

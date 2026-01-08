@@ -1,62 +1,52 @@
-<nav class="navbar navbar-expand-md border-bottom navbar-light bg-body-light py-0">
+<nav class="navbar border-bottom navbar-light bg-body-light py-0">
   <div class="container-fluid">
 
-    <a class="navbar-brand py-0" href="/listings">
+    <a class="navbar-logo navbar-brand py-0" href="/listings">
       <img class="logo" src="https://res.cloudinary.com/dxk7cwat3/image/upload/v1751363467/Logo_nnvcsq.png" alt="">
     </a>
 
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+    <!-- Search -->
+    <div class="navbar-nav search-bar">
+      <form class="d-flex search-bar-form" role="search" action="/listings" method="GET">
+        <input
+          class="form-control me-2"
+          type="search"
+          name="location"
+          placeholder="Search by Country or City"
+          value="<%= typeof location !== 'undefined' ? location : '' %>"
+        >
+        <button class="btn search-btn" type="submit">Search</button>
+      </form>
+    </div>
 
-    <div class="collapse navbar-collapse" id="navbarNav">
+    <!-- Profile / Menu -->
+    <div class="menu-wrapper navbar-nav ms-3">
+      <% if (currUser && currUser.profileImage && currUser.profileImage.url) { %>
+        <a href="/my-profile">
+          <img src="<%= currUser.profileImage.url %>" class="profile-image">
+        </a>
+      <% } %>
 
-      <div class="navbar-nav ms-auto">
-        <form class="d-flex" role="search" action="/listings" method="GET">
-          <input
-            class="form-control me-2"
-            type="search"
-            name="location"
-            placeholder="Search by Country or City"
-            aria-label="Search"
-            value="<%= typeof location !== 'undefined' ? location : '' %>"
-          >
-          <button class="btn search-btn btn-outline-success" type="submit">Search</button>
-        </form>
+      <button class="menu-button" onclick="toggleMenu()" type="button">
+        <i class="fas fa-bars"></i>
+      </button>
 
-      </div>
-
-      <div class="menu-wrapper navbar-nav ms-auto">
-        <% if (currUser && currUser.profileImage && currUser.profileImage.url) { %>
-          <a href="/my-profile"> <img src="<%= currUser.profileImage.url %>" alt="" class="profile-image"> </a>
-          <% } %>
-            <button class="menu-button" onclick="toggleMenu()" type="button">
-              <i class="fas fa-bars"></i>
-            </button>
-
-            <div class="dropdown-menu" id="dropdown">
-              <% if (typeof currUser !=='undefined' && currUser && currUser.role !== 'admin') { %>
-                
-                <a href="/listings/new">Wanderlust your home!</a>
-                <a href="/my-bookings">My Bookings</a>
-                <a href="/my-listings">My Listings</a>
-                <a href="/logout">Log Out</a>
-                
-                <% } else if (currUser && currUser.role === 'admin') { %>
-                  
-                  <a href="/listings">All Listings</a>
-                  <a href="/admin/listings/pending-approvals">Pending Approvals</a>
-                  <a href="/logout">Log Out</a>
-
-              <% } else { %>
-                
-                <a href="/signup">Sign Up</a>
-                <a href="/login">Log In</a>
-              
-                <% } %>
-            </div>
+      <div class="dropdown-menu" id="dropdown">
+        <% if (currUser && currUser.role !== 'admin') { %>
+          <a href="/listings/new">Wanderlust your home!</a>
+          <a href="/my-bookings">My Bookings</a>
+          <a href="/my-listings">My Listings</a>
+          <a href="/logout">Log Out</a>
+        <% } else if (currUser && currUser.role === 'admin') { %>
+          <a href="/listings">All Listings</a>
+          <a href="/admin/listings/pending-approvals">Pending Approvals</a>
+          <a href="/logout">Log Out</a>
+        <% } else { %>
+          <a href="/signup">Sign Up</a>
+          <a href="/login">Log In</a>
+        <% } %>
       </div>
     </div>
+
   </div>
 </nav>
