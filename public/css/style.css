@@ -146,7 +146,8 @@ button.primary-btn:hover {
   width: 20rem;
 }
 
-.search-btn {
+.search-btn, #filters-form-submit-button button {
+  background-color: transparent;
   border: 1px solid indianred;
   color: indianred;
 }
@@ -295,7 +296,7 @@ body.listing-page #home-page-division {
 #filters-form {
   /* width: 260px; */
   /* padding-right: 8px; */
-  height: 100%;
+  max-height: 100%;
   overflow-y: auto;
   position: sticky;
   top: 0;
@@ -359,7 +360,6 @@ body.listing-page #home-page-division {
 
 .custom-select {
   position: relative;
-  width: 180px;
   font-family: sans-serif;
 }
 
@@ -369,17 +369,6 @@ body.listing-page #home-page-division {
   border-radius: 6px;
   cursor: pointer;
   background: white;
-}
-
-.selected::after {
-  content: "▼";
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 12px;
-  color: #555;
-  pointer-events: none;
 }
 
 .sort-by-options {
@@ -418,6 +407,10 @@ body.listing-page #home-page-division {
   color: white;
 }
 
+.property-type-filter{
+  display: none;
+}
+
 /* =========================================
    5. SHOW PAGE (PROPERTY DETAILS)
    ========================================= */
@@ -444,12 +437,17 @@ body.listing-page #home-page-division {
 .sections {
   display: flex;
   /* width: 80%; */
-  margin: 5vh auto 5vh auto;
+  margin: 5vh auto auto auto;
   justify-content: space-around;
 }
 
 .left-sec {
   max-width: 60%;
+}
+
+.left-sec-btns{
+  display: flex;
+  justify-content: space-between;
 }
 
 .hosted-by {
@@ -533,6 +531,30 @@ body.listing-page #home-page-division {
   margin-bottom: 3rem;
 }
 
+.approval-options{
+  border: 1px solid black;
+  border-radius: 25px;
+  padding: 2rem;
+  text-align: center;
+  width: 50%;
+  margin: auto;
+}
+
+#listing-approval-form button{
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+}
+
+.approve-listing-btn{
+  background-color: green;
+}
+
+.reject-listing-btn{
+  background-color: red;
+}
+
 /* =========================================
    6. AMENITIES SECTION
    ========================================= */
@@ -542,17 +564,22 @@ body.listing-page #home-page-division {
 
 .amenity-tile {
   display: block;
+  height: 100%;
   cursor: pointer;
 }
 
 .tile-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
   border: 2px solid #ddd;
   border-radius: 12px;
-  padding: 1.2rem;
-  text-align: center;
-  transition: 0.2s;
+  padding: 1rem;
   background-color: #f9f9f9;
-  height: 100%;
+  transition: 0.2s;
 }
 
 .amenity-icon {
@@ -600,15 +627,6 @@ input[type="radio"]:checked+.tile-content {
   height: 100%;
   display: block;
 }
-
-/* Make tile content same height */
-.tile-content {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
 
 /* =========================================
    7. REVIEWS SECTION
@@ -839,9 +857,26 @@ input[type="radio"]:checked+.tile-content {
     width: 100%;
     position: static;
   }
+
+  form#filters-form div {
+    margin-bottom: 0.5rem;
+  } 
+
+  #show-page{
+    width: 100%;
+  }
+  .approval-options{
+    width: 100%;
+  }
 }
 
 @media (max-width: 768px) {
+  #filters{
+    display: none;
+  }
+  .property-type-filter{
+    display:block;
+  }
   .search-bar{
     width: 55%;
   }
@@ -865,6 +900,7 @@ input[type="radio"]:checked+.tile-content {
   }
   #filter-header {
     flex-wrap: wrap;
+    justify-content: space-between;
   }
   .property-slider {
     order: 1;
@@ -879,6 +915,9 @@ input[type="radio"]:checked+.tile-content {
 }
 
 @media (max-width: 600px) {
+  #show-page{
+    width: 90%;
+  }
   .navbar-logo{
     order: 1;
   }
@@ -899,7 +938,12 @@ input[type="radio"]:checked+.tile-content {
   }
   .amenity-item {
     padding: 4px 8px;
-    font-size: 12px;
+    font-size: 1rem;
     gap: 6px;
   }
+}
+
+no-scroll {
+  overflow: hidden;
+  height: 100vh; /* Ensures the height is locked to the viewport */
 }

@@ -1,7 +1,7 @@
 <% layout('layouts/boilerplate') -%>
 <% var title = "Wanderlust"; %>
 <h1>My Listings</h1>
-<div class="all-listing row row-cols-lg-4 mt-3">
+<div class="all-listing row row-cols-xl-4 row-cols-lg-3 row-cols-md-3 row-cols-sm-2 row-cols-1 mt-3">
     <% for( let listing of user.listings ) { %>
         <a href="/listings/<%=listing._id%>">
             <div class="card col">

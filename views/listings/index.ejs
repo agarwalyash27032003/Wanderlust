@@ -37,7 +37,7 @@
         ☰ Filters
     </button>
     <div class="custom-select">
-        <div class="selected">Sort by</div>
+        <div class="selected">Sort by ▼</div>
         <ul class="sort-by-options">
             <li data-value="">Default</li>
             <li data-value="price_asc">Low to High</li>
@@ -69,7 +69,7 @@
 
             <div class="country-filter">
                 <p>Country</p>
-                <select class="filter-form-control form-control" name="country" id="filter-country" onchange="this.form.submit()">
+                <select class="filter-form-control form-control" name="country" id="filter-country">
                     <option value="">All Countries</option>
                     <% for (let i = 0; i < countryNames.length; i++) { %>
                         <option value="<%= countryNames[i] %>" <%= country === countryNames[i] ? "selected" : "" %>> <%= countryNames[i] %> </option>
@@ -77,6 +77,22 @@
                 </select>
             </div>
 
+            <div class="property-type-filter">
+                <p>Property Type</p>
+                <select class="filter-form-control form-control" name="type" id="filter-property">
+                    <option value="">All Types</option>
+                    <option value="Igloo">Igloo</option>
+                    <option value="Flat">Flat</option>
+                    <option value="House">House</option>
+                    <option value="Camping">Camping</option>
+                    <option value="Caravan">Caravan</option>
+                </select>
+            </div>
+
+
+            <div id="filters-form-submit-button">
+                <button type="Submit" class="btn">Apply</button>
+            </div>
         </form>
     </div>
 

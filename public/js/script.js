@@ -196,15 +196,21 @@ document.querySelectorAll(
 
 const filterToggle = document.getElementById("filter-toggle");
 const filtersWrapper = document.getElementById("filters-wrapper");
+const filters_form_submit_button = document.getElementById("filters-form-submit-button");
+const body = document.body;
 
 if (filterToggle) {
   filterToggle.addEventListener("click", () => {
     filtersWrapper.classList.toggle("active");
+    filters_form_submit_button.classList.toggle("active");
+    body.classList.toggle("no-scroll");
   });
 }
 
 document.querySelector(".close-filters")?.addEventListener("click", () => {
   filtersWrapper.classList.remove("active");
+  filters_form_submit_button.classList.remove("active");
+  body.classList.remove("no-scroll");
 });
 
 const slider = document.querySelector(".property-slider");

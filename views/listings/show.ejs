@@ -17,7 +17,7 @@
                 <%- include("../shortcuts/amenities-disp") %>
                 <% if(currUser && currUser._id.equals(listing.owner._id)) {%> <!-- Checks if the user logged in is same as owner -->
                     <hr>
-                    <div class="left-sec-btns mt-4">
+                    <div class="left-sec-btns mt-4 mb-4">
                         <a class="edit-prop" href="/listings/<%=listing._id%>/edit">Edit Property!</a>
                         <br> <br>
                         <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE">
@@ -27,9 +27,7 @@
                 <% } %>
             </div>
             <div class="right-sec">
-                <p>&#8377;<%=listing.price.toLocaleString("en-IN")%> <span>/night</span> </p>
-                
-                
+                <p>&#8377;<%=listing.price.toLocaleString("en-IN")%> <span>/night</span> </p>    
                  
                     <form action="/listings/<%=listing._id%>/bookings" method="POST" id="booking-form">
                         <input type="hidden" name="listingId" value="<%= listing._id %>">
@@ -104,11 +102,39 @@
             <h1 class="edu-font">Meet your Host!</h1>
         </div>
         <hr>
-        <div id="things-to-know">
-            <h1 class="edu-font">Things to Know!</h1>
-            <div class="things-col">
+        <!-- <div id="things-to-know"> -->
+            <div class="table table-responsive things-to-know">
+                <h1 class="edu-font">Things to Know!</h1>
+                <table class="table table-borderless">
+                    <thead>
+                        <tr>
+                            <th>House Rules</th>
+                            <th>Safety & Property</th>
+                            <th>Cancellation Policy</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Check-in: 1:00 pm - 10:00 pm</td>
+                            <td>Exterior security cameras on property</td>
+                            <td>Add your trip dates to get the cancellation details for this stay.</td>
+                        </tr>
+                        <tr>
+                            <td>Check-out: Before 10:00 am</td>
+                            <td>Smoke alarm</td>
+                            <!-- <td>Add your trip dates to get the cancellation details for this stay.</td> -->
+                        </tr>
+                        <tr>
+                            <td>4 Guests Maximum</td>
+                            <!-- <td>Smoke alarm</td> -->
+                            <!-- <td>Add your trip dates to get the cancellation details for this stay.</td> -->
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- <div class="things-col">
                 <div>
-                    <p class="things-head">House rules</p>
+                    <p class="things-head">things-to-know</p>
                     <p class="things-info">Check-in: 1:00 pm - 10:00 pm</p>
                     <p class="things-info">Check-out: Before 10:00 am</p>
                     <p class="things-info">4 Guests Maximum</p>
@@ -117,15 +143,12 @@
                     <p class="things-head">Safety & Property</p>
                     <p class="things-info">Exterior security cameras on property</p>
                     <p class="things-info">Smoke alarm</p>
-                    <!-- <p>4 Guests Maximum</p> -->
                 </div>
                 <div>
                     <p class="things-head">Cancellation Policy</p>
                     <p class="things-info">Add your trip dates to get the cancellation details for this stay.</p>
-                    <!-- <p>Check-out: Before 10:00 am</p>
-                    <p>4 Guests Maximum</p> -->
                 </div>
-            </div>
-        </div>
+            </div> -->
+        <!-- </div> -->
 
     </div>

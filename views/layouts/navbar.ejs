@@ -21,7 +21,7 @@
 
     <!-- Profile / Menu -->
     <div class="menu-wrapper navbar-nav ms-3">
-      <% if (currUser && currUser.profileImage && currUser.profileImage.url) { %>
+      <% if (currUser && currUser !== null && currUser.profileImage && currUser.profileImage.url) { %>
         <a href="/my-profile">
           <img src="<%= currUser.profileImage.url %>" class="profile-image">
         </a>

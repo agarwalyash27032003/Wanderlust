@@ -72,3 +72,14 @@ module.exports.validateReview = (req, res, next) => {
     }
 };
 
+module.exports.createListing = async (req, res) => {
+  const listing = new Listing(req.body.listing);
+
+  listing.owner = req.user._id;
+  listing.isApproved = false; // pending approval
+
+  await listing.save();
+
+  req.flash("success", "Your listing has been sent for approval.");
+  res.redirect("/listings");
+};

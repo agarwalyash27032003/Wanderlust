@@ -70,9 +70,6 @@ module.exports.index = async (req, res) => {
     });
 };
 
-
-
-
 module.exports.renderForm = (req, res) => {
     // const countryCodes = Object.keys(countries.countries);
     // const countryNames = countryCodes.map(code => countries.countries[code].name).sort();
