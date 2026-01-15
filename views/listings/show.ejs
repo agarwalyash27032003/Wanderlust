@@ -29,28 +29,27 @@
             <div class="right-sec">
                 <p>&#8377;<%=listing.price.toLocaleString("en-IN")%> <span>/night</span> </p>    
                  
-                    <form action="/listings/<%=listing._id%>/bookings" method="POST" id="booking-form">
-                        <input type="hidden" name="listingId" value="<%= listing._id %>">
-                        
-                        <div>
-                            <label>Check-in:</label>
-                            <input class="date-input" id="checkin" type="text" name="checkIn" min="" required> 
-                        </div>
-    
-                        <div>
-                            <label>Check-out:</label>
-                            <input class="date-input" id="checkout" type="text" name="checkOut" min="" required>
-                        </div>
-    
-                        <div>
-                            <label>Guests:</label>
-                            <input type="number" name="guests" min="1" value="1" max=<%= listing.maxGuests %>>
-                        </div>
-    
-                        <button type="submit">Book Now</button>
-                    </form>
+                    <form id="booking-form">
+  <input type="hidden" id="listingId" value="<%= listing._id %>">
 
-                
+  <div>
+    <label>Check-in:</label>
+    <input id="checkin" name="checkIn" type="text" required>
+  </div>
+
+  <div>
+    <label>Check-out:</label>
+    <input id="checkout" name="checkOut" type="text" required>
+  </div>
+
+  <div>
+    <label>Guests:</label>
+    <input type="number" id="guests" name="guests" min="1" value="1">
+  </div>
+
+  <button type="button" id="pay-btn">Pay & Book</button>
+</form>
+
 
             </div>
         </div>

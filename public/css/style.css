@@ -361,6 +361,7 @@ body.listing-page #home-page-division {
 .custom-select {
   position: relative;
   font-family: sans-serif;
+  width: 8rem;
 }
 
 .selected {

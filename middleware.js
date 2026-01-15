@@ -5,13 +5,20 @@ const ExpressError = require("./utils/ExpressError.js");
 const { reviewSchema } = require("./schema.js");
 
 module.exports.isLoggedIn = (req, res, next) => {
-    if(!req.isAuthenticated()){ // checks if user is logged in or not
+    if (!req.isAuthenticated()) {
+        // If request expects JSON (fetch / API)
+        if (req.headers.accept?.includes("application/json") || req.xhr) {
+            return res.status(401).json({ error: "Not authenticated" });
+        }
+
+        // Normal browser navigation
         req.session.redirectUrl = req.originalUrl;
         req.flash("error", "You are not logged in!");
         return res.redirect("/login");
-    } 
+    }
     next();
-}
+};
+
 
 module.exports.isAdmin = (req, res, next) => {
     if (!req.user || req.user.role !== "admin") {
@@ -76,7 +83,7 @@ module.exports.createListing = async (req, res) => {
   const listing = new Listing(req.body.listing);
 
   listing.owner = req.user._id;
-  listing.isApproved = false; // pending approval
+  listing.approval_status = false; // pending approval
 
   await listing.save();
 

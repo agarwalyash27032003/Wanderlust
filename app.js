@@ -14,6 +14,7 @@ const passport = require("passport");
 const localStrategy = require("passport-local");
 const User = require("./models/user.js");
 const razorpay = require("razorpay"); 
+const ExpressError = require("./utils/ExpressError");
 
 // Sessions
 const session = require("express-session");
@@ -58,6 +59,7 @@ passport.deserializeUser(User.deserializeUser());
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname,"/views"));
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 
@@ -66,8 +68,9 @@ const Review = require("./models/review.js");
 const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
-const bookingRouter = require("./routes/booking.js");
+// const bookingRouter = require("./routes/booking.js");
 const adminRouter = require("./routes/admin.js");
+const paymentRouter = require("./routes/payment.js");
 
 main().then(() => {
     console.log("Database successful");
@@ -87,11 +90,13 @@ app.use((req, res, next) => {
 
 app.use("/listings", listingRouter); // Every route defined in listingRouter will be prefixed with /listings.
 app.use("/listings/:id/reviews", reviewRouter);
-app.use("/listings/:id/bookings", bookingRouter);
+// app.use("/listings/:id/bookings", bookingRouter);
 app.use("/", userRouter);
 app.use("/admin/listings", adminRouter);
+app.use("/payment", paymentRouter);
+console.log("✅ PAYMENT ROUTES MOUNTED");
 
-app.all("/{*any}", (req, res, next) => {
+app.use((req, res, next) => {
     next(new ExpressError(404, "Page Not Found!")); 
 });
 
