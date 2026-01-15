@@ -1,7 +1,3 @@
-/* ===========================
-   GLOBAL / COMMON UI
-=========================== */
-
 function toggleMenu() {
   const dropdown = document.getElementById("dropdown");
   if (!dropdown) return;
@@ -16,9 +12,7 @@ document.addEventListener("click", function (e) {
   }
 });
 
-/* ===========================
-   PROPERTY TYPE FILTER
-=========================== */
+
 
 document.querySelectorAll(".property-type").forEach(icon => {
   icon.addEventListener("click", () => {
@@ -27,14 +21,13 @@ document.querySelectorAll(".property-type").forEach(icon => {
   });
 });
 
-/* ===========================
-   MAP (SHOW / FORM)
-=========================== */
+
+// Maps
 
 document.addEventListener('DOMContentLoaded', () => {
   const mapElement = document.getElementById('map');
 
-  // === CASE 1: Form page (new or edit listing) ===
+  //Form page (new or edit listing)
   const latInput = document.getElementById('lat');
   const lngInput = document.getElementById('lng');
 
@@ -70,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // === CASE 2: Show page (view-only map with pin) ===
+  //Show page (view-only map with pin)
   if (mapElement && mapElement.dataset.lat && mapElement.dataset.lng) {
     const lat = parseFloat(mapElement.dataset.lat);
     const lng = parseFloat(mapElement.dataset.lng);
@@ -88,10 +81,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-/* ===========================
-   BOOKING + FLATPICKR + PAYMENT
-=========================== */
 
+// Bookings - Payment + Calendar
 document.addEventListener("DOMContentLoaded", async () => {
   console.log("✅ Booking script loaded");
 
@@ -102,7 +93,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const guestsInput = document.getElementById("guests");
 
   if (!checkin || !checkout || !payBtn || !listingId || !guestsInput) {
-    console.error("❌ Booking elements missing");
     return;
   }
 
@@ -126,13 +116,29 @@ document.addEventListener("DOMContentLoaded", async () => {
     dateFormat: "Y-m-d",
     minDate: "today",
     disable: disabledDates,
-    onChange(_, dateStr) {
-      checkoutPicker.set("minDate", dateStr);
+
+    onChange(selectedDates, dateStr) {
+      if (!selectedDates.length) return;
+
+      //Add 1 day to check-in
+      const minCheckoutDate = new Date(selectedDates[0]);
+      minCheckoutDate.setDate(minCheckoutDate.getDate() + 1);
+
+      checkoutPicker.set("minDate", minCheckoutDate);
+
+      //Reset checkout if invalid
+      if (
+        checkoutPicker.selectedDates.length &&
+        checkoutPicker.selectedDates[0] < minCheckoutDate
+      ) {
+        checkoutPicker.clear();
+      }
+
       checkoutPicker.open();
     }
   });
 
-  /* -------- Razorpay Payment -------- */
+  //Razorpay Payment 
   payBtn.addEventListener("click", async () => {
     const checkIn = checkin.value;
     const checkOut = checkout.value;
@@ -196,7 +202,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 document.addEventListener("DOMContentLoaded", () => {
   const customSelect = document.querySelector(".custom-select");
-  if (!customSelect) return; // 🔥 prevents crash
+  if (!customSelect) return;
 
   const selected = customSelect.querySelector(".selected");
   const options = customSelect.querySelector(".sort-by-options");
@@ -210,7 +216,7 @@ document.addEventListener("DOMContentLoaded", () => {
     option.addEventListener("click", () => {
       const value = option.dataset.value;
 
-      // ✅ Preserve existing query params
+      // Preserve existing query params
       const url = new URL(window.location.href);
 
       if (value) {
@@ -235,7 +241,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeBtn = document.querySelector(".close-filters");
   const body = document.body;
 
-  // ✅ Guard: only run if filters exist
+  // Guard: only run if filters exist
   if (!filterToggle || !filtersWrapper) return;
 
   // OPEN

@@ -10,7 +10,6 @@ module.exports.signUpForm = async (req, res) => {
         let { username, email, password } = req.body;
         const newUser = new User({email, username});
         let registeredUser = await User.register(newUser, password);
-        // console.log(registeredUser);
         req.login(registeredUser, (err) => { // This will automatically login the user after sign up. Once we signup, we are logged in automatically
             if(err){
                 return next(err);
@@ -29,7 +28,6 @@ module.exports.renderLoginForm = (req, res) => {
 };
 
 module.exports.loginForm = async(req, res) => {
-    // console.log(req);
     req.flash("success", `Welcome back`);
     let redirectUrl = res.locals.redirectUrl || "/listings";
     res.redirect(redirectUrl);

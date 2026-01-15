@@ -7,14 +7,13 @@ const Booking = require("../models/booking");
 const User = require("../models/user");
 const { isLoggedIn } = require("../middleware");
 
-/* ============================
-   CREATE RAZORPAY ORDER
-============================ */
+// Creating Razorpay Order
 router.post("/create-order", isLoggedIn, async (req, res) => {
-  console.log("🔥 CREATE ORDER HIT");
 
   try {
-    const { listingId } = req.body;
+    const { listingId, checkIn, checkOut } = req.body;
+    const nights = ((new Date(checkOut) - new Date(checkIn)) / (1000 * 24 * 60 * 60));
+    console.log(nights);
 
     const listing = await Listing.findById(listingId);
     if (!listing || !listing.approval_status) {
@@ -22,9 +21,9 @@ router.post("/create-order", isLoggedIn, async (req, res) => {
     }
 
     const order = await razorpay.orders.create({
-      amount: listing.price * 100,
+      amount: listing.price * nights * 100,
       currency: "INR",
-      receipt: `rcpt_${Date.now()}` // ✅ FIXED
+      receipt: `rcpt_${Date.now()}`
     });
 
     res.json(order);
@@ -36,14 +35,12 @@ router.post("/create-order", isLoggedIn, async (req, res) => {
 });
 
 
-/* ============================
-   VERIFY PAYMENT & CREATE BOOKING
-============================ */
+// Payment Verification and Creating Order
 router.post("/verify", isLoggedIn, async (req, res) => {
   try {
     const {razorpay_order_id, razorpay_payment_id, razorpay_signature, listingId, checkIn, checkOut, guests } = req.body;
 
-    // 🔐 Signature verification 
+    //Signature verification 
 
     const body = razorpay_order_id + "|" + razorpay_payment_id;
     const expectedSignature = crypto.createHmac("sha256", process.env.RAZORPAY_KEY_SECRET).update(body).digest("hex");
@@ -51,13 +48,13 @@ router.post("/verify", isLoggedIn, async (req, res) => {
       return res.status(400).json({ success: false, message: "Invalid signature" });
     }
 
-    // 📅 Date validation 
+    // Date validation 
 
     if (new Date(checkIn) >= new Date(checkOut)) {
       return res.status(400).json({ success: false, message: "Invalid dates" });
     }
 
-    // 🚫 Prevent overlapping bookings 
+    // Prevent overlapping bookings 
 
     const overlap = await Booking.findOne({ listing: listingId, checkIn: { $lt: checkOut }, checkOut: { $gt: checkIn } });
 
@@ -71,18 +68,19 @@ router.post("/verify", isLoggedIn, async (req, res) => {
       return res.status(404).json({ success: false, message: "Listing not found" });
     }
 
-    // ✅ Create booking
+    //Create booking
 
-    const booking = await Booking.create({ user: req.user._id, listing: listingId, checkIn, checkOut, guests, orderId: razorpay_order_id, paymentId: razorpay_payment_id, amount: listing.price });
+    const nights = ((new Date(checkOut) - new Date(checkIn)) / (1000 * 24 * 60 * 60));
+    console.log(nights);
 
-    // 🔗 Attach references 
+    const booking = await Booking.create({ user: req.user._id, listing: listingId, checkIn, checkOut, guests, orderId: razorpay_order_id, paymentId: razorpay_payment_id, amount: listing.price * nights });
 
     await Listing.findByIdAndUpdate(listingId, { $push: { bookings: booking._id } }); 
     await User.findByIdAndUpdate(req.user._id, { $push: { bookings: booking._id } }); 
 
     req.flash("success", "Payment successful! Booking confirmed 🎉"); 
     res.json({ success: true });
-    
+
   } 
   catch (err) { 
     console.error("Verify payment error:", err); 

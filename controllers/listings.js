@@ -71,8 +71,6 @@ module.exports.index = async (req, res) => {
 };
 
 module.exports.renderForm = (req, res) => {
-    // const countryCodes = Object.keys(countries.countries);
-    // const countryNames = countryCodes.map(code => countries.countries[code].name).sort();
     res.render("listings/new.ejs", {listing: { amenities: [] }, countryNames, title: `Add New Property - Wanderlust` });
 };
 
@@ -111,8 +109,6 @@ module.exports.showListing = async (req, res) => {
 // Getting the edit form
 module.exports.editForm = async (req, res) => {
     const { id } = req.params;
-    // const countryCodes = Object.keys(countries.countries);
-    // const countryNames = countryCodes.map(code => countries.countries[code].name).sort();
     
     const listing = await Listing.findById(id);
     if (!listing) {

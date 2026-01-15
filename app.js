@@ -68,7 +68,6 @@ const Review = require("./models/review.js");
 const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
-// const bookingRouter = require("./routes/booking.js");
 const adminRouter = require("./routes/admin.js");
 const paymentRouter = require("./routes/payment.js");
 
@@ -90,11 +89,9 @@ app.use((req, res, next) => {
 
 app.use("/listings", listingRouter); // Every route defined in listingRouter will be prefixed with /listings.
 app.use("/listings/:id/reviews", reviewRouter);
-// app.use("/listings/:id/bookings", bookingRouter);
 app.use("/", userRouter);
 app.use("/admin/listings", adminRouter);
 app.use("/payment", paymentRouter);
-console.log("✅ PAYMENT ROUTES MOUNTED");
 
 app.use((req, res, next) => {
     next(new ExpressError(404, "Page Not Found!")); 
