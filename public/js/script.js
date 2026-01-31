@@ -25,66 +25,126 @@ document.querySelectorAll(".property-type").forEach(icon => {
 // Maps
 
 document.addEventListener('DOMContentLoaded', () => {
-  const mapElement = document.getElementById('map');
+  const mapElement = document.getElementById("map");
+  if (!mapElement) return;
 
-  //Form page (new or edit listing)
-  const latInput = document.getElementById('lat');
-  const lngInput = document.getElementById('lng');
+  const locationInput = document.getElementById("location");
+  const cityInput = document.getElementById("city");
+  const countryInput = document.getElementById("country");
+  const latInput = document.getElementById("lat");
+  const lngInput = document.getElementById("lng");
 
-  if (mapElement && latInput && lngInput) {
-    const defaultLat = parseFloat(latInput.value) || 26.72098;
-    const defaultLng = parseFloat(lngInput.value) || 88.43010;
+  /* ======================================================
+     FORM PAGE MAP (New / Edit Listing)
+     ====================================================== */
+
+  if (locationInput && latInput && lngInput) {
+
+    let defaultLat = parseFloat(latInput.value) || 20.5937;
+    let defaultLng = parseFloat(lngInput.value) || 78.9629;
 
     const map = new maplibregl.Map({
-      container: 'map',
-      style: 'https://api.maptiler.com/maps/basic-v2/style.json?key=orQJlTV0osvHWSlRP4p9',
+      container: "map",
+      style: "https://api.maptiler.com/maps/basic-v2/style.json?key=orQJlTV0osvHWSlRP4p9",
       center: [defaultLng, defaultLat],
-      zoom: 13
+      zoom: 5
     });
 
     let marker = new maplibregl.Marker({ draggable: true })
       .setLngLat([defaultLng, defaultLat])
       .addTo(map);
 
-    // Update hidden fields when marker is dragged
-    marker.on('dragend', () => {
-      const lngLat = marker.getLngLat();
-      lngInput.value = lngLat.lng;
-      latInput.value = lngLat.lat;
+    /* ===== LIVE LOCATION + CITY + COUNTRY SEARCH ===== */
+
+    let debounceTimer;
+
+    async function updateMapFromAddress() {
+      clearTimeout(debounceTimer);
+
+      debounceTimer = setTimeout(async () => {
+        const location = locationInput.value.trim();
+        const city = cityInput?.value.trim();
+        const country = countryInput?.value;
+
+        const fullAddress = [location, city, country].filter(Boolean).join(", ");
+
+        if (fullAddress.length < 3) return;
+
+        try {
+          const res = await fetch(
+            `https://api.maptiler.com/geocoding/${encodeURIComponent(fullAddress)}.json?key=orQJlTV0osvHWSlRP4p9`
+          );
+
+          const data = await res.json();
+          if (!data.features || !data.features.length) return;
+
+          const [lng, lat] = data.features[0].center;
+
+          map.flyTo({ center: [lng, lat], zoom: 14 });
+          marker.setLngLat([lng, lat]);
+
+          latInput.value = lat;
+          lngInput.value = lng;
+
+        } catch (err) {
+          console.error("Geocoding error:", err);
+        }
+      }, 400);
+    }
+
+    locationInput.addEventListener("input", updateMapFromAddress);
+    cityInput?.addEventListener("input", updateMapFromAddress);
+    countryInput?.addEventListener("change", updateMapFromAddress);
+
+    /* ===== DRAG MARKER ===== */
+
+    marker.on("dragend", () => {
+      const pos = marker.getLngLat();
+      latInput.value = pos.lat;
+      lngInput.value = pos.lng;
     });
 
-    // Click on map to move marker
-    map.on('click', (e) => {
-      const lng = e.lngLat.lng;
-      const lat = e.lngLat.lat;
+    /* ===== CLICK MAP ===== */
+
+    map.on("click", (e) => {
+      const { lng, lat } = e.lngLat;
       marker.setLngLat([lng, lat]);
-      lngInput.value = lng;
       latInput.value = lat;
-    });
-  }
-
-  //Show page (view-only map with pin)
-  if (mapElement && mapElement.dataset.lat && mapElement.dataset.lng) {
-    const lat = parseFloat(mapElement.dataset.lat);
-    const lng = parseFloat(mapElement.dataset.lng);
-
-    const map = new maplibregl.Map({
-      container: 'map',
-      style: 'https://api.maptiler.com/maps/basic-v2/style.json?key=orQJlTV0osvHWSlRP4p9',
-      center: [lng, lat],
-      zoom: 13
+      lngInput.value = lng;
     });
 
-    new maplibregl.Marker()
-      .setLngLat([lng, lat])
-      .addTo(map);
+    return; // IMPORTANT → prevents show-page map from running
   }
+
+  /* ======================================================
+     SHOW PAGE MAP (Static)
+     ====================================================== */
+
+  const lat = parseFloat(mapElement.dataset.lat);
+  const lng = parseFloat(mapElement.dataset.lng);
+
+  console.log("📍 SHOW MAP COORDS:", lat, lng);
+
+  if (!lat || !lng) {
+    console.warn("❌ Missing lat/lng for show page map");
+    return;
+  }
+
+  const map = new maplibregl.Map({
+    container: "map",
+    style: "https://api.maptiler.com/maps/basic-v2/style.json?key=orQJlTV0osvHWSlRP4p9",
+    center: [lng, lat],
+    zoom: 13
+  });
+
+  new maplibregl.Marker()
+    .setLngLat([lng, lat])
+    .addTo(map);
 });
 
 
 // Bookings - Payment + Calendar
 document.addEventListener("DOMContentLoaded", async () => {
-  console.log("✅ Booking script loaded");
 
   const checkin = document.getElementById("checkin");
   const checkout = document.getElementById("checkout");
@@ -142,7 +202,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   payBtn.addEventListener("click", async () => {
     const checkIn = checkin.value;
     const checkOut = checkout.value;
-    const guests = guestsInput.value;
+    const guests = Number(guestsInput.value) || 1;
 
     if (!checkIn || !checkOut) {
       alert("Please select check-in and check-out dates");
@@ -152,7 +212,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const res = await fetch("/payment/create-order", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ listingId, checkIn, checkOut })
+      body: JSON.stringify({ listingId, checkIn, checkOut, guests })
     });
 
     if (res.status === 401) {

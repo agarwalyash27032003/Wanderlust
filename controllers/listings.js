@@ -9,7 +9,7 @@ const countryNames = countryCodes.map(code => countries.countries[code].name).so
 module.exports.index = async (req, res) => {
     const { type, location, sort, country, minPrice, maxPrice } = req.query;
 
-    let query = { approval_status: true };
+    let query = { approval_status: "approved" };
 
     // in RegExp, ^ and $ means exact match, and i means case-insensitive
     if (type) {
@@ -56,7 +56,7 @@ module.exports.index = async (req, res) => {
 
     if (location && listings.length === 0) {
         req.flash("error", "No listings found. Try a different location.");
-        listings = await Listing.find({ approval_status: true }).sort(sortOption);
+        listings = await Listing.find({ approval_status: "approved" }).sort(sortOption);
     }
 
     res.render("listings/index.ejs", {
@@ -148,7 +148,15 @@ module.exports.editListing = async (req, res) => {
 
 module.exports.deleteListing = async (req, res) => {
     let { id } = req.params;
-    await Listing.findByIdAndDelete(id);
+    const listing = await Listing.findByIdAndDelete(id);
+
+    if (listing) {
+        // Remove listing reference from user
+        await User.findByIdAndUpdate(listing.owner, {
+            $pull: { listings: listing._id }
+        });
+    }
+    
     req.flash("success", "Listing has been deleted!");
     res.redirect("/listings");
 };

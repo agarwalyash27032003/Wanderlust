@@ -2,7 +2,7 @@
 <% var title = listing.title; %>
 <title><%= title %></title>
 
-<% if (listing.approval_status === false) { %>
+<% if (listing.approval_status !== "approved") { %>
     <%- include("../forms/approvalForm.ejs") %>
 <% } %>
 

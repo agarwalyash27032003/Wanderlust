@@ -2,7 +2,7 @@ const Listing = require("../models/listing.js");
 const ExpressError = require("../utils/ExpressError");
 
 module.exports.allPendingApprovals = async (req, res) => {
-    const listings = await Listing.find({"approval_status" : false}); // get all the listings
+    const listings = await Listing.find({"approval_status" : "pending"}); // get all the listings
 
     res.render("admin/admin.ejs", {
         listings,
@@ -37,11 +37,12 @@ module.exports.approvalStatus = async (req, res) => {
     }
 
     if (action === "approve") {
-        listing.approval_status = true;
+        listing.approval_status = "approved";
         await listing.save();
         req.flash("success", "Listing approved successfully!");
     } 
     else if (action === "reject") {
+        listing.approval_status = "declined";
         await Listing.findByIdAndDelete(id);
         req.flash("success", "Listing rejected and deleted!");
     } 

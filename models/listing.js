@@ -46,8 +46,9 @@ const listingSchema = new Schema({
       required: true,  
     },
     approval_status:{
-      type: Boolean,
-      default: false,
+      type: String,
+      enum: ["approved", "pending", "declined"],
+      default: "pending"
     },
 });
 

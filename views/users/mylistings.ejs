@@ -9,6 +9,14 @@
                 <div class="card-body">
                     <h2><%=listing.title%></h2>
                     <p>&#8377;<%= listing.price?.toLocaleString("en-IN") || "N/A" %> / night</p>
+                    <% if(listing.approval_status === "pending") { %>
+                    <span class="badge bg-warning">Pending</span>
+                    <% } else if(listing.approval_status === "approved") { %>
+                    <span class="badge bg-success">Approved</span>
+                    <% } else { %>
+                    <span class="badge bg-danger">Declined</span>
+                    <% } %>
+
                 </div>
             </div>
         </a>

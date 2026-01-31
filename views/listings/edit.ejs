@@ -13,9 +13,15 @@
         <input type="number" name="listing[price]" value="<%= listing.price %>" id="">
         <input type="number" name="listing[numOfRooms]" value="<%= listing.numOfRooms ? listing.numOfRooms : '' %>" placeholder="Number of Rooms" id="">
         <input type="number" name="listing[maxGuests]" value="<%= listing.maxGuests ? listing.maxGuests : '' %>" placeholder="Maximum Guests" id="">
-        <input type="text" name="listing[location]" value="<%= listing.location ? listing.location : 'Enter location' %>" id=""> 
-        <input type="text" name="listing[city]" value="<%= listing.city ? listing.city : '' %>" placeholder="Enter city" id=""> 
-        <input type="text" name="listing[country]" value="<%= listing.country ? listing.country : 'Enter country' %>" id=""> 
+        <input type="text" id="location" name="listing[location]" 
+       value="<%= listing.location %>" required>
+
+<input type="text" id="city" name="listing[city]" 
+       value="<%= listing.city %>" placeholder="Enter city">
+
+<input type="text" id="country" name="listing[country]" 
+       value="<%= listing.country %>" placeholder="Enter country">
+ 
         <div id="map" style="height: 400px;"></div>
         <input type="hidden" name="listing[longitude]" id="lng" value="<%= listing.longitude %>">
         <input type="hidden" name="listing[latitude]" id="lat" value="<%= listing.latitude %>">

@@ -83,7 +83,7 @@ module.exports.createListing = async (req, res) => {
   const listing = new Listing(req.body.listing);
 
   listing.owner = req.user._id;
-  listing.approval_status = false; // pending approval
+  listing.approval_status = "pending"; // pending approval
 
   await listing.save();
 

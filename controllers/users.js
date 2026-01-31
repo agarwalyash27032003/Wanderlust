@@ -1,5 +1,6 @@
 const User = require("../models/user.js");
 const Listing = require("../models/listing.js");
+const { approvalStatus } = require("./admin.js");
 
 module.exports.renderSignupForm = (req, res) => {
     res.render("users/signup.ejs",{ title: "Wanderlust" });
@@ -75,8 +76,7 @@ module.exports.myProfileEdit = async (req, res) => {
 
 module.exports.myListing = async (req, res) => {
     const user = await User.findById(req.user._id).populate({
-        path: "listings",
-        match: { approval_status: true }
+        path: "listings"
     });
     res.render("users/mylistings.ejs", { title: "Wanderlust", user });
 }
