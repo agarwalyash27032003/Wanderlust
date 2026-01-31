@@ -54,13 +54,13 @@
         </div>
         
         <% 
-            const hasBooked = listing.bookings.find(b => currUser && b.user._id.toString() === currUser._id.toString());
+            const hasBooked = listing.bookings.find(b => currUser && b.user._id.toString() === currUser._id.toString() && b.status === "completed");
             const hasReviewed = listing.reviews.some(r => currUser && r.author._id.toString() === currUser._id.toString());
             const nowDate = new Date(now);
-            const isCompleted = hasBooked && (nowDate >= new Date(hasBooked.checkOut));
+            // const isCompleted = hasBooked && (nowDate >= new Date(hasBooked.checkOut));
         %>
 
-        <% if (currUser && hasBooked && !hasReviewed && isCompleted && !currUser._id.equals(listing.owner._id) ) { %>
+        <% if (currUser && hasBooked && !hasReviewed && !currUser._id.equals(listing.owner._id) ) { %>
             <!-- <hr> -->
             <%- include("../forms/leave-review") %>
         <% } %>

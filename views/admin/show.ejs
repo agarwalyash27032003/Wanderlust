@@ -3,7 +3,7 @@
 <title><%= title %></title>
 
 <% if (listing.approval_status !== "approved") { %>
-    <%- include("../forms/approvalForm.ejs") %>
+    <%- include("../forms/approvalForm.ejs", { listing }) %>
 <% } %>
 
     <div id="show-page">

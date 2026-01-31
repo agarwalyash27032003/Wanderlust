@@ -16,7 +16,7 @@ module.exports.showListing = async (req, res) => {
 
     if(!listing){
         req.flash("error", "Listing Not Found!");
-        return res.redirect("/admin/listings/pending-approval");
+        return res.redirect("/admin/listings/pending-approvals");
     }
 
     res.render("admin/show.ejs", {
@@ -43,9 +43,9 @@ module.exports.approvalStatus = async (req, res) => {
     } 
     else if (action === "reject") {
         listing.approval_status = "declined";
-        await Listing.findByIdAndDelete(id);
-        req.flash("success", "Listing rejected and deleted!");
-    } 
+        await listing.save();
+        req.flash("success", "Listing rejected");
+    }
     else {
         req.flash("error", "Invalid action");
     }

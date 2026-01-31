@@ -4,36 +4,38 @@
 
         <div class="all-listing row row-cols-lg-4 mt-3">
             <% for( let booking of user.bookings ) { %>
-                <%
-    const isUserBooking = currUser && booking.user._id.toString() === currUser._id.toString();
-    const nowDate = new Date();
-    const checkInDate = new Date(booking.checkIn);
-    const isUpcoming = nowDate < checkInDate;
-    %>
-    
+                <% 
+                  const isUserBooking = currUser && booking.user._id.toString() === currUser._id.toString();
+                  const nowDate = new Date();
+                  const checkInDate = new Date(booking.checkIn);
+                  const isUpcoming = booking.status === "booked" && nowDate < checkInDate;
+                %>
+
                 <div class="card col py-4">
                     <img src="<%=booking.listing.image.url%>" alt="">
                     <div class="card-body">
-                        <h2>
-                            <%=booking.listing.title%>
-                        </h2>
-                        <p>CheckIn: <%= booking.checkIn %>
-                        </p>
-                        <p>CheckOut: <%= booking.checkOut %>
-                        </p>
-                        <p>Number of Guests: <%= booking.guests %>
-                        </p>
-                        <p>Booking Date: <%= booking.createdAt %>
-                        </p>
+                        <h2> <%=booking.listing.title%> </h2>
+                        <p>CheckIn: <%= booking.checkIn %> </p>
+                        <p>CheckOut: <%= booking.checkOut %></p>
+                        <p>Number of Guests: <%= booking.guests %></p>
+                        <p>Booking Date: <%= booking.createdAt %></p>
                     </div>
                     <% if (isUserBooking && isUpcoming) { %>
-            <form action="/listings/<%= booking.listing._id %>/bookings/<%= booking._id %>?_method=DELETE"
-                  method="POST" onsubmit="return confirm('Do you want to cancel this booking?')">
-                <button class="btn btn-danger">Cancel</button>
-            </form>
-        <% } %>
+                      <form 
+                        action="/bookings/<%= booking._id %>/cancel?_method=DELETE"
+                        method="POST"
+                        onsubmit="return confirm('Do you want to cancel this booking and request a refund?')"
+                      >
+                        <button class="btn btn-danger">Cancel & Refund</button>
+                      </form>
+                    <% } %>
+                    <% if (booking.status === "cancelled") { %>
+                      <p class="text-danger fw-bold">Cancelled</p>
+                    <% } %>
 
-
+                    <% if (booking.refundStatus === "refunded") { %>
+                      <p class="text-success fw-bold">💸 Refunded</p>
+                    <% } %>
                 </div>
-                <% } %>
+            <% } %>
         </div>

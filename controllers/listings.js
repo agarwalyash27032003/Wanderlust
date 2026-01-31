@@ -1,5 +1,4 @@
 const Listing = require("../models/listing.js");
-const ExpressError = require("../utils/ExpressError");
 const User = require("../models/user.js");
 const countries = require("countries-list");
 
@@ -75,6 +74,7 @@ module.exports.renderForm = (req, res) => {
 };
 
 module.exports.createListing = async (req, res, next) => {
+
     // New listing is the new document created, and saves it to the listings collection
     const user = await User.findById(req.user._id);
     let url = req.file.path;
@@ -85,6 +85,7 @@ module.exports.createListing = async (req, res, next) => {
     newListing.longitude = req.body.listing.longitude;
     newListing.owner = req.user._id;
     newListing.image = {url, filename};
+    newListing.approval_status = "pending";
 
     user.listings.push(newListing);
 
@@ -93,6 +94,7 @@ module.exports.createListing = async (req, res, next) => {
     
     req.flash("success", "Listing Sent for Approval!");
     res.redirect("/listings");
+    
 };
 
 module.exports.showListing = async (req, res) => {
@@ -155,6 +157,7 @@ module.exports.deleteListing = async (req, res) => {
         await User.findByIdAndUpdate(listing.owner, {
             $pull: { listings: listing._id }
         });
+        await Booking.deleteMany({ listing: listing._id });
     }
     
     req.flash("success", "Listing has been deleted!");

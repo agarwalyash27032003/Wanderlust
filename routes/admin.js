@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true }); // Required to access :id
-const ExpressError = require("../utils/ExpressError");
 const User = require("../models/user.js");
 const {isLoggedIn, isAdmin} = require("../middleware.js");
 const adminController = require("../controllers/admin.js")

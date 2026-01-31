@@ -70,6 +70,7 @@ const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 const adminRouter = require("./routes/admin.js");
 const paymentRouter = require("./routes/payment.js");
+const bookingRouter = require("./routes/booking.js");
 
 main().then(() => {
     console.log("Database successful");
@@ -92,6 +93,7 @@ app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
 app.use("/admin/listings", adminRouter);
 app.use("/payment", paymentRouter);
+app.use("/bookings", bookingRouter);
 
 app.use((req, res, next) => {
     next(new ExpressError(404, "Page Not Found!")); 

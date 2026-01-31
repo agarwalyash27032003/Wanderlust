@@ -1,6 +1,6 @@
 const User = require("../models/user.js");
 const Listing = require("../models/listing.js");
-const { approvalStatus } = require("./admin.js");
+const Booking = require("../models/booking.js");
 
 module.exports.renderSignupForm = (req, res) => {
     res.render("users/signup.ejs",{ title: "Wanderlust" });
@@ -11,7 +11,8 @@ module.exports.signUpForm = async (req, res) => {
         let { username, email, password } = req.body;
         const newUser = new User({email, username});
         let registeredUser = await User.register(newUser, password);
-        req.login(registeredUser, (err) => { // This will automatically login the user after sign up. Once we signup, we are logged in automatically
+        req.login(registeredUser, (err) => { 
+            // This will automatically login the user after sign up. Once we signup, we are logged in automatically
             if(err){
                 return next(err);
             }
@@ -82,6 +83,37 @@ module.exports.myListing = async (req, res) => {
 }
 
 module.exports.myBooking = async (req, res) => {
-    const user = await User.findById(req.user._id).populate({path: "bookings",populate: {path: "listing"}});
-    res.render("users/mybookings.ejs", { title: "Wanderlust", user });
-}
+  try {
+    const user = await User.findById(req.user._id)
+      .populate({
+        path: "bookings",
+        populate: { path: "listing" }
+      });
+
+    const now = new Date();
+
+    //Safe status update
+    for (let booking of user.bookings) {
+      if (
+        booking.status === "booked" &&
+        new Date(booking.checkOut) < now
+      ) {
+        await Booking.updateOne(
+          { _id: booking._id },
+          { status: "completed" }
+        );
+
+        booking.status = "completed"; // update in-memory for UI
+      }
+    }
+
+    res.render("users/mybookings.ejs", {
+      title: "Wanderlust",
+      user
+    });
+
+  } catch (err) {
+    console.error("My bookings error:", err);
+    res.status(500).send("Something went wrong while loading bookings");
+  }
+};

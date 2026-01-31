@@ -1,79 +1,56 @@
-const crypto = require("crypto");
 const Booking = require("../models/booking");
-const Listing = require("../models/listing");
-const User = require("../models/user");
+const razorpay = require("../utils/razorpay");
 
-module.exports.confirmBooking = async (req, res) => {
+module.exports.cancelBooking = async (req, res) => {
   try {
-    const {
-      listingId,
-      checkIn,
-      checkOut,
-      guests,
-      razorpay_payment_id,
-      razorpay_order_id,
-      razorpay_signature
-    } = req.body;
+    const bookingId = req.params.id;
 
-    // Safety checks
-    if (!listingId || !razorpay_payment_id || !razorpay_order_id || !razorpay_signature) {
-      req.flash("error", "Payment verification failed");
-      return res.redirect("/listings");
+    const booking = await Booking.findById(bookingId);
+    if (!booking) {
+      req.flash("error", "Booking not found");
+      return res.redirect("/my-bookings");
     }
 
-    /* ========== VERIFY RAZORPAY SIGNATURE ========== */
-
-    const hmac = crypto.createHmac("sha256", process.env.RAZORPAY_SECRET);
-    hmac.update(razorpay_order_id + "|" + razorpay_payment_id);
-    const generatedSignature = hmac.digest("hex");
-
-    if (generatedSignature !== razorpay_signature) {
-      req.flash("error", "Payment verification failed");
-      return res.redirect("/listings");
+    if (!booking.user.equals(req.user._id)) {
+      req.flash("error", "Unauthorized");
+      return res.redirect("/my-bookings");
     }
 
-    /* ========== PREVENT DOUBLE BOOKING ========== */
-
-    const overlapping = await Booking.findOne({
-      listing: listingId,
-      $or: [
-        { checkIn: { $lt: checkOut }, checkOut: { $gt: checkIn } }
-      ]
-    });
-
-    if (overlapping) {
-      req.flash("error", "Selected dates are already booked");
-      return res.redirect(`/listings/${listingId}`);
+    if (new Date() >= new Date(booking.checkIn)) {
+      req.flash("error", "Booking already started. Refund not allowed.");
+      return res.redirect("/my-bookings");
     }
 
-    /* ========== CREATE BOOKING ========== */
+    if (!booking.amount) {
+      req.flash("error", "Refund amount missing. Contact support.");
+      return res.redirect("/my-bookings");
+    }
 
-    const booking = await Booking.create({
-      user: req.user._id,
-      listing: listingId,
-      checkIn,
-      checkOut,
-      guests,
-      paymentId: razorpay_payment_id,
-      orderId: razorpay_order_id
-    });
+    let refund;
+    try {
+      refund = await razorpay.payments.refund(
+        booking.paymentId,
+        { amount: booking.amount * 100 }
+      );
+    } catch (err) {
+      console.error("Razorpay refund error:", err);
+      req.flash("error", "Refund failed. Try again later.");
+      return res.redirect("/my-bookings");
+    }
 
-    /* ========== ATTACH TO LISTING + USER ========== */
+    booking.status = "cancelled";
+    booking.refundStatus = "refunded";
+    booking.refundId = refund.id;
+    booking.cancelledAt = new Date();
 
-    await Listing.findByIdAndUpdate(listingId, {
-      $push: { bookings: booking._id }
-    });
+    await booking.save();
 
-    await User.findByIdAndUpdate(req.user._id, {
-      $push: { bookings: booking._id }
-    });
-
-    req.flash("success", "Payment successful! Booking confirmed 🎉");
+    req.flash("success", "Booking cancelled & refund initiated 💸");
     res.redirect("/my-bookings");
 
   } catch (err) {
-    console.error("Booking confirmation error:", err);
-    req.flash("error", "Something went wrong. Please try again.");
-    res.redirect("/listings");
+    console.error("Cancel booking crash:", err);
+    req.flash("error", "Something went wrong.");
+    res.redirect("/my-bookings");
   }
 };

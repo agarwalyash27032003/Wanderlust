@@ -1,15 +1,11 @@
-const express = require("express");
-const router = express.Router();
+// controllers/payment.js
 const crypto = require("crypto");
 const razorpay = require("../utils/razorpay");
 const Listing = require("../models/listing");
 const Booking = require("../models/booking");
 const User = require("../models/user");
-const { isLoggedIn } = require("../middleware");
 
-
-router.post("/create-order", isLoggedIn, async (req, res) => {
-    
+module.exports.createOrder = async (req, res) => {
   try {
     const { listingId, checkIn, checkOut, guests } = req.body;
 
@@ -26,19 +22,15 @@ router.post("/create-order", isLoggedIn, async (req, res) => {
       return res.status(404).json({ error: "Listing not available" });
     }
 
-    const maxGuestsPerRoom = listing.maxGuests;
-    const totalRooms = listing.numOfRooms;
-
-    const roomsRequired = Math.ceil(guests / maxGuestsPerRoom);
-
-    if (roomsRequired > totalRooms) {
+    const roomsRequired = Math.ceil(guests / listing.maxGuests);
+    if (roomsRequired > listing.numOfRooms) {
       return res.status(400).json({ error: "Not enough rooms available" });
     }
 
-    const totalAmount = listing.price * nights * roomsRequired;
+    const amount = listing.price * nights * roomsRequired;
 
     const order = await razorpay.orders.create({
-      amount: totalAmount * 100,
+      amount: amount * 100,
       currency: "INR",
       receipt: `rcpt_${Date.now()}`
     });
@@ -49,10 +41,9 @@ router.post("/create-order", isLoggedIn, async (req, res) => {
     console.error("Create order error:", err);
     res.status(500).json({ error: "Order creation failed" });
   }
-});
+};
 
-
-router.post("/verify", isLoggedIn, async (req, res) => {
+module.exports.verifyPayment = async (req, res) => {
   try {
     const {
       razorpay_order_id,
@@ -65,7 +56,6 @@ router.post("/verify", isLoggedIn, async (req, res) => {
     } = req.body;
 
     const body = razorpay_order_id + "|" + razorpay_payment_id;
-
     const expectedSignature = crypto
       .createHmac("sha256", process.env.RAZORPAY_SECRET)
       .update(body)
@@ -77,6 +67,7 @@ router.post("/verify", isLoggedIn, async (req, res) => {
 
     const overlap = await Booking.findOne({
       listing: listingId,
+      status: "booked",
       checkIn: { $lt: checkOut },
       checkOut: { $gt: checkIn }
     });
@@ -87,10 +78,7 @@ router.post("/verify", isLoggedIn, async (req, res) => {
 
     const listing = await Listing.findById(listingId);
 
-    const maxGuestsPerRoom = listing.maxGuests;
-    const totalRooms = listing.numOfRooms;
-    const roomsRequired = Math.ceil(guests / maxGuestsPerRoom);
-
+    const roomsRequired = Math.ceil(guests / listing.maxGuests);
     const nights = Math.ceil(
       (new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24)
     );
@@ -108,7 +96,9 @@ router.post("/verify", isLoggedIn, async (req, res) => {
       amount,
       orderId: razorpay_order_id,
       paymentId: razorpay_payment_id,
-      paymentStatus: "paid"
+      paymentStatus: "paid",
+      status: "booked",
+      refundStatus: "none"
     });
 
     await Listing.findByIdAndUpdate(listingId, {
@@ -125,6 +115,4 @@ router.post("/verify", isLoggedIn, async (req, res) => {
     console.error("Verify payment error:", err);
     res.status(500).json({ success: false, message: "Payment verification failed" });
   }
-});
-
-module.exports = router;
+};
